@@ -257,7 +257,7 @@ QLineEdit{
         <widget class="QCustomSlideMenu" name="leftMenu" native="true">
          <property name="minimumSize">
           <size>
-           <width>0</width>
+           <width>200</width>
            <height>0</height>
           </size>
          </property>
@@ -496,9 +496,167 @@ QLineEdit{
         <widget class="QWidget" name="mainBodyContent" native="true">
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
-           <widget class="QStackedWidget" name="stackedWidget">
-            <widget class="QWidget" name="page"/>
-            <widget class="QWidget" name="page_2"/>
+           <widget class="QCustomStackedWidget" name="mainPages">
+            <widget class="QWidget" name="homePage">
+             <widget class="QLabel" name="label_8">
+              <property name="geometry">
+               <rect>
+                <x>230</x>
+                <y>270</y>
+                <width>291</width>
+                <height>151</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>50</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Home</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="carsPage">
+             <widget class="QLabel" name="label_5">
+              <property name="geometry">
+               <rect>
+                <x>360</x>
+                <y>370</y>
+                <width>291</width>
+                <height>151</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>50</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Cars</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="comparePage">
+             <widget class="QLabel" name="label_6">
+              <property name="geometry">
+               <rect>
+                <x>290</x>
+                <y>270</y>
+                <width>291</width>
+                <height>151</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>50</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Compare</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="newsPage">
+             <widget class="QLabel" name="label_9">
+              <property name="geometry">
+               <rect>
+                <x>380</x>
+                <y>250</y>
+                <width>291</width>
+                <height>151</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>50</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>News</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="accountPage">
+             <widget class="QLabel" name="label_4">
+              <property name="geometry">
+               <rect>
+                <x>280</x>
+                <y>340</y>
+                <width>291</width>
+                <height>151</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>50</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Account</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="settingsPage">
+             <widget class="QLabel" name="label_10">
+              <property name="geometry">
+               <rect>
+                <x>290</x>
+                <y>290</y>
+                <width>291</width>
+                <height>151</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>50</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Settings</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="helpPage">
+             <widget class="QLabel" name="label_7">
+              <property name="geometry">
+               <rect>
+                <x>340</x>
+                <y>270</y>
+                <width>291</width>
+                <height>151</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>50</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Help</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="aboutPage">
+             <widget class="QLabel" name="label_3">
+              <property name="geometry">
+               <rect>
+                <x>328</x>
+                <y>256</y>
+                <width>291</width>
+                <height>151</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>50</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>About</string>
+              </property>
+             </widget>
+            </widget>
            </widget>
           </item>
          </layout>
@@ -615,6 +773,12 @@ QLineEdit{
   <customwidget>
    <class>QCustomSlideMenu</class>
    <extends>QWidget</extends>
+   <header location="global">Custom_Widgets.Widgets.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QCustomStackedWidget</class>
+   <extends>QStackedWidget</extends>
    <header location="global">Custom_Widgets.Widgets.h</header>
    <container>1</container>
   </customwidget>

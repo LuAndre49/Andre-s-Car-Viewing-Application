@@ -16,6 +16,7 @@ from ui.ui_interface import *
 # IMPORT Custom widgets
 from Custom_Widgets import *
 from Custom_Widgets.QAppSettings import QAppSettings
+from PySide6.QtCore import QEasingCurve
 ########################################################################
 
 ########################################################################
@@ -39,7 +40,8 @@ class MainWindow(QMainWindow):
         loadJsonStyle(self, self.ui, jsonFiles = {
             "json-styles/style.json"
         }) 
-
+        
+        animatePageTransitions(self)
         ########################################################################
 
         #######################################################################
@@ -56,6 +58,39 @@ class MainWindow(QMainWindow):
         # self = QMainWindow class
         QAppSettings.updateAppSettings(self)
 
+def animatePageTransitions(self):
+    if hasattr(self.ui, 'mainPages'):  
+        stacked = self.ui.mainPages
+        
+        
+        stacked.setSlideTransition(True)
+        stacked.setFadeTransition(False)
+        
+        # Set animation properties
+        stacked.setTransitionSpeed(300)  # Duration in ms
+        stacked.setTransitionDirection(Qt.Horizontal)  
+        
+        # Set easing curve
+        
+        stacked.setTransitionEasingCurve(QEasingCurve.OutBack)
+        
+        # Connect navigation buttons
+        button_map = {
+            "homeBtn": "homePage",
+            "carsBtn": "carsPage",
+            "compareBtn": "comparePage",
+            "newsBtn": "newsPage",
+            "accountBtn": "accountPage",
+            "aboutBtn": "aboutPage",
+            "settingsBtn": "settingsPage",
+            "helpBtn": "helpPage"
+        }
+        
+        for btn_name, page_name in button_map.items():
+            if hasattr(self.ui, btn_name) and hasattr(self.ui, page_name):
+                getattr(self.ui, btn_name).clicked.connect(
+                    lambda _, p=page_name: stacked.slideToWidget(getattr(self.ui, p))
+                )
 ########################################################################
 ## EXECUTE APP
 ########################################################################

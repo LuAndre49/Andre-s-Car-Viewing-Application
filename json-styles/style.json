@@ -74,5 +74,26 @@
       "animationDuration": 500,
       "animationEasingCurve": "Linear"
     }]
-}]
+  }],
+  "QStackedWidget": {
+    "mainPages": {
+      "transition": {
+        "type": "slide",  
+        "duration": 500,
+        "easing": "OutBack",
+        "direction": "horizontal"
+      },
+      "navigation": {
+        "homeBtn": "homePage",
+        "carsBtn": "carsPage",
+        "accountBtn": "accountPage",
+        "newsBtn": "newsPage",
+        "compareBtn": "comparePage",
+        "settingsBtn": "settingsPage",
+        "aboutBtn": "aboutPage",
+        "helpBtn": "helpPage"
+      }
+    }
+  }
+  
 }
