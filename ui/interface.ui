@@ -30,7 +30,7 @@
 	margin: 0;
 	color: #fff;
 }
-#centralwidget, #homeBtn, #mainBodyContent{
+#centralwidget, #homeBtn, #mainBodyContent, QLineEdit{
 	background-color:#1b1b27
 }
 #header, #mainBody{
@@ -56,6 +56,15 @@ QPushButton{
 	border-left: 3px solid #cc5bce;
 	font-weight: bold;
 }
+QLineEdit{
+	padding: 5px 10px;
+	border-radius: 5px;
+}
+
+#addUserBtn{
+	background-color:  #cc5bce;
+	border-radius: 10px;
+}
 </string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -78,6 +87,21 @@ QPushButton{
     <item>
      <widget class="QWidget" name="header" native="true">
       <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
        <item alignment="Qt::AlignmentFlag::AlignLeft">
         <widget class="QFrame" name="frame_2">
          <property name="frameShape">
@@ -88,7 +112,7 @@ QPushButton{
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item alignment="Qt::AlignmentFlag::AlignLeft">
-           <widget class="QPushButton" name="pushButton_5">
+           <widget class="QPushButton" name="menuBtn">
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
@@ -207,6 +231,12 @@ QPushButton{
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>1113</width>
+        <height>620</height>
+       </size>
+      </property>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <property name="spacing">
         <number>0</number>
@@ -224,11 +254,17 @@ QPushButton{
         <number>0</number>
        </property>
        <item>
-        <widget class="QWidget" name="leftMenu" native="true">
+        <widget class="QCustomSlideMenu" name="leftMenu" native="true">
          <property name="minimumSize">
           <size>
-           <width>200</width>
+           <width>0</width>
            <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>0</width>
+           <height>16777215</height>
           </size>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -245,10 +281,16 @@ QPushButton{
            <number>0</number>
           </property>
           <property name="bottomMargin">
-           <number>0</number>
+           <number>30</number>
           </property>
           <item>
            <widget class="QWidget" name="widget" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>591</height>
+             </size>
+            </property>
             <layout class="QVBoxLayout" name="verticalLayout_4">
              <property name="spacing">
               <number>0</number>
@@ -463,7 +505,105 @@ QPushButton{
         </widget>
        </item>
        <item>
-        <widget class="QWidget" name="rightMenu" native="true"/>
+        <widget class="QWidget" name="rightMenu" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>200</width>
+           <height>0</height>
+          </size>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_7">
+          <item alignment="Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop">
+           <widget class="QWidget" name="widget_2" native="true">
+            <layout class="QVBoxLayout" name="verticalLayout_8">
+             <item alignment="Qt::AlignmentFlag::AlignHCenter">
+              <widget class="QLabel" name="label_2">
+               <property name="minimumSize">
+                <size>
+                 <width>70</width>
+                 <height>70</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>70</width>
+                 <height>70</height>
+                </size>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="pixmap">
+                <pixmap resource="../Qss/icons/_icons.qrc">:/feather/icons/feather/edit-2.png</pixmap>
+               </property>
+               <property name="scaledContents">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QFrame" name="frame_5">
+               <property name="frameShape">
+                <enum>QFrame::Shape::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Shadow::Raised</enum>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_9">
+                <item>
+                 <widget class="QLineEdit" name="lineEdit">
+                  <property name="placeholderText">
+                   <string>Username</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="lineEdit_2">
+                  <property name="placeholderText">
+                   <string>Email</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="lineEdit_3">
+                  <property name="placeholderText">
+                   <string>Phone Number</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item alignment="Qt::AlignmentFlag::AlignHCenter">
+              <widget class="QPushButton" name="addUserBtn">
+               <property name="font">
+                <font>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>Add User</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../Qss/icons/_icons.qrc">
+                 <normaloff>:/material_design/icons/material_design/add.png</normaloff>:/material_design/icons/material_design/add.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -471,6 +611,14 @@ QPushButton{
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomSlideMenu</class>
+   <extends>QWidget</extends>
+   <header location="global">Custom_Widgets.Widgets.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../Qss/icons/_icons.qrc"/>
  </resources>

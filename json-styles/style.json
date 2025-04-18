@@ -48,5 +48,31 @@
         }
       ]
     }
-  ]
+  ],
+  "QCustomSlideMenu": [{
+    "name": "leftMenu",
+    "defaultSize": [{
+      "width": 0,
+      "height": "parent"
+    }],
+    "collapsedSize": [{
+      "width": 0,
+      "height": "parent"
+    }],
+    "expandedSize": [{
+      "width": 200,
+      "height": "parent"
+    }],
+    "toggleButton": [{
+      "buttonName": "menuBtn",
+      "icons": [{
+        "whenMenuIsCollapsed": ":/feather/icons/feather/align-justify.png",
+        "whenMenuIsExpanded": ":/feather/icons/feather/chevron-left.png"
+      }]
+    }],
+    "menuTransitionAnimation": [{
+      "animationDuration": 500,
+      "animationEasingCurve": "Linear"
+    }]
+}]
 }

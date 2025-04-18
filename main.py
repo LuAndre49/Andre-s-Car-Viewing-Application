@@ -38,7 +38,7 @@ class MainWindow(QMainWindow):
         # Use this to specify your json file(s) path/name
         loadJsonStyle(self, self.ui, jsonFiles = {
             "json-styles/style.json"
-            }) 
+        }) 
 
         ########################################################################
 
