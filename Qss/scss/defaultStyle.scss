@@ -3,6 +3,72 @@
             // FILE AUTO-GENERATED. PUT YOUR DEFAULT STYLES HERE. 
             // THESE STYLES WILL OVERIDE THE THEME STYLES
             //====================================================//
+            *{
+                border:none;
+                background-color:transparent;
+                background:transparent;
+                padding: 0;
+                margin: 0;
+                color: #fff;
+            }
+            #centralwidget, #homeBtn, #mainBodyContent, QLineEdit{
+                background-color:#1b1b27
+            }
+            #header, #mainBody{
+                background-color:#27263c;
+            }
+            #pushButton_2{
+                border: 1px solid #cc5bce;
+                border-radius: 19px;   /* Half of height to make it circular */
+                min-width: 38px;       /* Width = 2 × border-radius */
+                min-height: 38px;      /* Height = 2 × border-radius */
+                padding: 0;            /* Remove default padding */
+                margin: 0;
+                
+                text-align:center;
+            }
+            QPushButton{
+                text-align:left;
+                padding: 5px 10px;
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+            }
+            #homeBtn{
+                border-left: 3px solid #cc5bce;
+                font-weight: bold;
+            }
+            QLineEdit{
+                padding: 5px 10px;
+                border-radius: 5px;
+            }
+            
+            #addUserBtn{
+                background-color:  #cc5bce;
+                border-radius: 10px;
+            }
+            /* Theme selector styling */
+            QGroupBox {
+                border: 1px solid palette(mid);
+                border-radius: 5px;
+                margin-top: 10px;
+                padding-top: 15px;
+            }
+
+            QGroupBox::title {
+                subcontrol-origin: margin;
+                left: 10px;
+                padding: 0 3px;
+            }
+
+            QRadioButton {
+                spacing: 5px; /* Space between text and indicator */
+                padding: 5px;
+            }
+
+            QRadioButton::indicator {
+                width: 16px;
+                height: 16px;
+            }
             
             //===================================================//
             // END //

@@ -17,6 +17,12 @@ from ui.ui_interface import *
 from Custom_Widgets import *
 from Custom_Widgets.QAppSettings import QAppSettings
 from PySide6.QtCore import QEasingCurve
+
+# For spider
+from run_scraper import run_scraper
+from load_car_data import load_car_listings
+from ui.carsPage import CarsPage
+from ui.carDetailsPage import CarDetailsPage
 ########################################################################
 
 ########################################################################
@@ -28,35 +34,26 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        ########################################################################
-        # APPLY JSON STYLESHEET
-        ########################################################################
-        # self = QMainWindow class
-        # self.ui = Ui_MainWindow / user interface class
-        #Use this if you only have one json file named "style.json" inside the root directory, "json" directory or "jsonstyles" folder.
-        # loadJsonStyle(self, self.ui) 
-
-        # Use this to specify your json file(s) path/name
         loadJsonStyle(self, self.ui, jsonFiles = {
             "json-styles/style.json"
         }) 
-        
         animatePageTransitions(self)
-        ########################################################################
+        run_scraper()
+        car_data = load_car_listings()
+        cars_layout = QVBoxLayout(self.ui.carsPage)  # <-- Add to existing QWidget
+        self.cars_page = CarsPage(car_data, self.show_car_details)
+        cars_layout.addWidget(self.cars_page)
 
-        #######################################################################
-        # SHOW WINDOW
-        #######################################################################
         self.show() 
 
-        ########################################################################
-        # UPDATE APP SETTINGS LOADED FROM JSON STYLESHEET 
-        # ITS IMPORTANT TO RUN THIS AFTER SHOWING THE WINDOW
-        # THIS PROCESS WILL RUN ON A SEPARATE THREAD WHEN GENERATING NEW ICONS
-        # TO PREVENT THE WINDOW FROM BEING UNRESPONSIVE
-        ########################################################################
         # self = QMainWindow class
         QAppSettings.updateAppSettings(self)
+
+    def show_car_details(self, car_data):
+        
+        self.details_page = CarDetailsPage(car_data)
+        self.ui.mainPages.addWidget(self.details_page)
+        self.ui.mainPages.setCurrentWidget(self.details_page)
 
 def animatePageTransitions(self):
     if hasattr(self.ui, 'mainPages'):  
@@ -65,12 +62,8 @@ def animatePageTransitions(self):
         
         stacked.setSlideTransition(True)
         stacked.setFadeTransition(False)
-        
-        # Set animation properties
-        stacked.setTransitionSpeed(300)  # Duration in ms
-        stacked.setTransitionDirection(Qt.Horizontal)  
-        
-        # Set easing curve
+        stacked.setTransitionSpeed(300) 
+        stacked.setTransitionDirection(Qt.Horizontal)
         
         stacked.setTransitionEasingCurve(QEasingCurve.OutBack)
         
@@ -91,6 +84,8 @@ def animatePageTransitions(self):
                 getattr(self.ui, btn_name).clicked.connect(
                     lambda _, p=page_name: stacked.slideToWidget(getattr(self.ui, p))
                 )
+
+
 ########################################################################
 ## EXECUTE APP
 ########################################################################
@@ -99,6 +94,7 @@ if __name__ == "__main__":
     ########################################################################
     ## 
     ########################################################################
+    
     window = MainWindow()
     window.show()
     sys.exit(app.exec_())

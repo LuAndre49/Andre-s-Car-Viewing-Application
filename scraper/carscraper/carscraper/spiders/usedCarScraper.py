@@ -9,12 +9,13 @@ class UsedCarScraper(scrapy.Spider):
     max_pages = 50  # Adjust as needed
     custom_settings = {
         'FEEDS': {
-            'used_cars.csv': {
-                'format': 'csv',
+            'used_cars.json': {
+                'format': 'json',
                 'encoding': 'utf-8-sig',
                 'overwrite': True
             }
-        }
+        },
+        'LOG_LEVEL': 'WARNING'
     }
     def parse(self, response):
         
@@ -23,9 +24,7 @@ class UsedCarScraper(scrapy.Spider):
         else:
             current_page = 1  # The first page does not contain '/p'
 
-        self.logger.info(f"Parsing page {current_page}")
-
-
+        
         listings = response.css('div.row.listitempage div.col-4')
         
         for car in listings:

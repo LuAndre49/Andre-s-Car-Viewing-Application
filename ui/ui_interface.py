@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'interfaceUaeubW.ui'
+## Form generated from reading UI file 'interfaceLYTaQS.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -15,9 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
-    QLineEdit, QMainWindow, QPushButton, QSizePolicy,
-    QSpacerItem, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
+    QLabel, QLineEdit, QMainWindow, QPushButton,
+    QSizePolicy, QSpacerItem, QTableWidget, QTableWidgetItem,
+    QVBoxLayout, QWidget)
 
 from Custom_Widgets.Widgets import (QCustomSlideMenu, QCustomStackedWidget)
 from Qss.icons import _icons_rc
@@ -26,54 +27,82 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1113, 690)
+        MainWindow.resize(1113, 740)
         font = QFont()
+        font.setFamilies([u"Segoe UI"])
         font.setBold(True)
         MainWindow.setFont(font)
         MainWindow.setCursor(QCursor(Qt.CursorShape.ArrowCursor))
-        MainWindow.setStyleSheet(u"*{\n"
-"	border:none;\n"
-"	background-color:transparent;\n"
-"	background:transparent;\n"
-"	padding: 0;\n"
-"	margin: 0;\n"
-"	color: #fff;\n"
-"}\n"
-"#centralwidget, #homeBtn, #mainBodyContent, QLineEdit{\n"
-"	background-color:#1b1b27\n"
-"}\n"
-"#header, #mainBody{\n"
-"	background-color:#27263c;\n"
-"}\n"
-"#pushButton_2{\n"
-"	border: 1px solid #cc5bce;\n"
-"    border-radius: 19px;   /* Half of height to make it circular */\n"
-"    min-width: 38px;       /* Width = 2 \u00d7 border-radius */\n"
-"    min-height: 38px;      /* Height = 2 \u00d7 border-radius */\n"
-"    padding: 0;            /* Remove default padding */\n"
+        MainWindow.setStyleSheet(u"* {\n"
+"    border: none;\n"
+"    background: transparent;\n"
+"    padding: 0;\n"
 "    margin: 0;\n"
-"    qproperty-iconSize: 38px;  /* Force icon size via CSS */\n"
-"	text-align:center;\n"
+"    font-family: \"Segoe UI\", sans-serif;\n"
+"    color: #E2E8F0;\n"
 "}\n"
-"QPushButton{\n"
-"	text-align:left;\n"
-"	padding: 5px 10px;\n"
-"	border-top-left-radius: 10px;\n"
-"	border-bottom-left-radius: 10px;\n"
+"\n"
+"#leftMenu {\n"
+"    background-color: #2B6CB0;\n"
 "}\n"
-"#homeBtn{\n"
-"	border-left: 3px solid #cc5bce;\n"
-"	font-weight: bold;\n"
+"\n"
+"QPushButton {\n"
+"    color: #F7FAFC;\n"
+"    padding: 10px 14px;\n"
+"    border-radius: 8px;\n"
+"    text-align: left;\n"
+"	background-color: #4A5568;\n"
 "}\n"
-"QLineEdit{\n"
-"	padding: 5px 10px;\n"
-"	border-radius: 5px;\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #3B82C4;\n"
 "}\n"
-""
-                        "\n"
-"#addUserBtn{\n"
-"	background-color:  #cc5bce;\n"
-"	border-radius: 10px;\n"
+"\n"
+"/* Active button style */\n"
+"#homeBtn {\n"
+"    background-color: #1A365D;\n"
+"    border-left: 4px solid #E6F0FA;\n"
+"    font-weight: bold;\n"
+"}\n"
+"\n"
+"/* Main Content Background */\n"
+"#mainBody {\n"
+"    background-color: #1A202C; \n"
+"}\n"
+"\n"
+"/* Header */\n"
+"#header {\n"
+"    background-color: #2D3748;\n"
+"    padding: 10px;\n"
+"}\n"
+"\n"
+"/* Add User Panel */\n"
+"#rightMenu {\n"
+"    background-color: #2B6CB0;\n"
+"    border-radius: 10px;\n"
+"    padding: 10px;\n"
+"}\n"
+"\n"
+"/* Inputs */\n"
+"QLineEdit {\n"
+"    background"
+                        "-color: #FFFFFF;\n"
+"    padding: 6px 10px;\n"
+"    border-radius: 5px;\n"
+"    border: 1px solid #CBD5E0;\n"
+"    color: #2D3748;\n"
+"}\n"
+"\n"
+"/* Add User Button */\n"
+"#addUserBtn {\n"
+"    background-color: #4A5568;\n"
+"    color: white;\n"
+"    border-radius: 8px;\n"
+"    padding: 6px 12px;\n"
+"}\n"
+"\n"
+"#addUserBtn:hover {\n"
+"    background-color: #1A365D;\n"
 "}\n"
 "")
         self.centralwidget = QWidget(MainWindow)
@@ -107,7 +136,7 @@ class Ui_MainWindow(object):
         self.label = QLabel(self.frame_2)
         self.label.setObjectName(u"label")
         font1 = QFont()
-        font1.setFamilies([u"Bauhaus"])
+        font1.setFamilies([u"Segoe UI"])
         font1.setPointSize(16)
         font1.setBold(True)
         self.label.setFont(font1)
@@ -300,6 +329,7 @@ class Ui_MainWindow(object):
         self.label_8.setObjectName(u"label_8")
         self.label_8.setGeometry(QRect(230, 270, 291, 151))
         font2 = QFont()
+        font2.setFamilies([u"Segoe UI"])
         font2.setPointSize(50)
         self.label_8.setFont(font2)
         self.mainPages.addWidget(self.homePage)
@@ -326,10 +356,71 @@ class Ui_MainWindow(object):
         self.mainPages.addWidget(self.newsPage)
         self.accountPage = QWidget()
         self.accountPage.setObjectName(u"accountPage")
-        self.label_4 = QLabel(self.accountPage)
+        self.verticalLayout_10 = QVBoxLayout(self.accountPage)
+        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
+        self.widget_3 = QWidget(self.accountPage)
+        self.widget_3.setObjectName(u"widget_3")
+        self.verticalLayout_11 = QVBoxLayout(self.widget_3)
+        self.verticalLayout_11.setObjectName(u"verticalLayout_11")
+        self.frame_6 = QFrame(self.widget_3)
+        self.frame_6.setObjectName(u"frame_6")
+        self.frame_6.setFrameShape(QFrame.Shape.StyledPanel)
+        self.frame_6.setFrameShadow(QFrame.Shadow.Raised)
+        self.horizontalLayout_5 = QHBoxLayout(self.frame_6)
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.label_4 = QLabel(self.frame_6)
         self.label_4.setObjectName(u"label_4")
-        self.label_4.setGeometry(QRect(280, 340, 291, 151))
-        self.label_4.setFont(font2)
+        font3 = QFont()
+        font3.setFamilies([u"Segoe UI"])
+        font3.setPointSize(25)
+        self.label_4.setFont(font3)
+
+        self.horizontalLayout_5.addWidget(self.label_4, 0, Qt.AlignmentFlag.AlignLeft)
+
+        self.showUserFormBtn = QPushButton(self.frame_6)
+        self.showUserFormBtn.setObjectName(u"showUserFormBtn")
+        self.showUserFormBtn.setFont(font)
+        self.showUserFormBtn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        icon11 = QIcon()
+        icon11.addFile(u":/material_design/icons/material_design/add_circle.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.showUserFormBtn.setIcon(icon11)
+        self.showUserFormBtn.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout_5.addWidget(self.showUserFormBtn, 0, Qt.AlignmentFlag.AlignRight)
+
+
+        self.verticalLayout_11.addWidget(self.frame_6)
+
+        self.tableWidget = QTableWidget(self.widget_3)
+        if (self.tableWidget.columnCount() < 4):
+            self.tableWidget.setColumnCount(4)
+        __qtablewidgetitem = QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(0, __qtablewidgetitem)
+        __qtablewidgetitem1 = QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(1, __qtablewidgetitem1)
+        __qtablewidgetitem2 = QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(2, __qtablewidgetitem2)
+        __qtablewidgetitem3 = QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(3, __qtablewidgetitem3)
+        self.tableWidget.setObjectName(u"tableWidget")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.MinimumExpanding)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.tableWidget.sizePolicy().hasHeightForWidth())
+        self.tableWidget.setSizePolicy(sizePolicy1)
+        self.tableWidget.setMinimumSize(QSize(500, 700))
+        self.tableWidget.horizontalHeader().setMinimumSectionSize(50)
+        self.tableWidget.horizontalHeader().setDefaultSectionSize(160)
+        self.tableWidget.horizontalHeader().setProperty(u"showSortIndicator", False)
+        self.tableWidget.horizontalHeader().setStretchLastSection(False)
+        self.tableWidget.verticalHeader().setProperty(u"showSortIndicator", False)
+        self.tableWidget.verticalHeader().setStretchLastSection(False)
+
+        self.verticalLayout_11.addWidget(self.tableWidget)
+
+
+        self.verticalLayout_10.addWidget(self.widget_3)
+
         self.mainPages.addWidget(self.accountPage)
         self.settingsPage = QWidget()
         self.settingsPage.setObjectName(u"settingsPage")
@@ -358,13 +449,14 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2.addWidget(self.mainBodyContent)
 
-        self.rightMenu = QWidget(self.mainBody)
+        self.rightMenu = QCustomSlideMenu(self.mainBody)
         self.rightMenu.setObjectName(u"rightMenu")
         self.rightMenu.setMinimumSize(QSize(200, 0))
         self.verticalLayout_7 = QVBoxLayout(self.rightMenu)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
         self.widget_2 = QWidget(self.rightMenu)
         self.widget_2.setObjectName(u"widget_2")
+        self.widget_2.setMinimumSize(QSize(164, 262))
         self.verticalLayout_8 = QVBoxLayout(self.widget_2)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
         self.label_2 = QLabel(self.widget_2)
@@ -382,20 +474,20 @@ class Ui_MainWindow(object):
         self.frame_5.setFrameShadow(QFrame.Shadow.Raised)
         self.verticalLayout_9 = QVBoxLayout(self.frame_5)
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
-        self.lineEdit = QLineEdit(self.frame_5)
-        self.lineEdit.setObjectName(u"lineEdit")
+        self.username = QLineEdit(self.frame_5)
+        self.username.setObjectName(u"username")
 
-        self.verticalLayout_9.addWidget(self.lineEdit)
+        self.verticalLayout_9.addWidget(self.username)
 
-        self.lineEdit_2 = QLineEdit(self.frame_5)
-        self.lineEdit_2.setObjectName(u"lineEdit_2")
+        self.email = QLineEdit(self.frame_5)
+        self.email.setObjectName(u"email")
 
-        self.verticalLayout_9.addWidget(self.lineEdit_2)
+        self.verticalLayout_9.addWidget(self.email)
 
-        self.lineEdit_3 = QLineEdit(self.frame_5)
-        self.lineEdit_3.setObjectName(u"lineEdit_3")
+        self.phoneNumber = QLineEdit(self.frame_5)
+        self.phoneNumber.setObjectName(u"phoneNumber")
 
-        self.verticalLayout_9.addWidget(self.lineEdit_3)
+        self.verticalLayout_9.addWidget(self.phoneNumber)
 
 
         self.verticalLayout_8.addWidget(self.frame_5)
@@ -404,9 +496,9 @@ class Ui_MainWindow(object):
         self.addUserBtn.setObjectName(u"addUserBtn")
         self.addUserBtn.setFont(font)
         self.addUserBtn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        icon11 = QIcon()
-        icon11.addFile(u":/material_design/icons/material_design/add.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.addUserBtn.setIcon(icon11)
+        icon12 = QIcon()
+        icon12.addFile(u":/material_design/icons/material_design/add.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.addUserBtn.setIcon(icon12)
         self.addUserBtn.setIconSize(QSize(24, 24))
 
         self.verticalLayout_8.addWidget(self.addUserBtn, 0, Qt.AlignmentFlag.AlignHCenter)
@@ -438,7 +530,7 @@ class Ui_MainWindow(object):
         self.carsBtn.setText(QCoreApplication.translate("MainWindow", u"Cars", None))
         self.compareBtn.setText(QCoreApplication.translate("MainWindow", u"Compare", None))
         self.newsBtn.setText(QCoreApplication.translate("MainWindow", u"News", None))
-        self.accountBtn.setText(QCoreApplication.translate("MainWindow", u"My Account", None))
+        self.accountBtn.setText(QCoreApplication.translate("MainWindow", u"Accounts", None))
         self.settingsBtn.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
         self.helpBtn.setText(QCoreApplication.translate("MainWindow", u"Help", None))
         self.aboutBtn.setText(QCoreApplication.translate("MainWindow", u"About", None))
@@ -446,14 +538,23 @@ class Ui_MainWindow(object):
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Cars", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Compare", None))
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"News", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Account", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Accounts", None))
+        self.showUserFormBtn.setText(QCoreApplication.translate("MainWindow", u"Add User", None))
+        ___qtablewidgetitem = self.tableWidget.horizontalHeaderItem(0)
+        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"ID", None));
+        ___qtablewidgetitem1 = self.tableWidget.horizontalHeaderItem(1)
+        ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"Email", None));
+        ___qtablewidgetitem2 = self.tableWidget.horizontalHeaderItem(2)
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"Username", None));
+        ___qtablewidgetitem3 = self.tableWidget.horizontalHeaderItem(3)
+        ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"Phone Number", None));
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Help", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"About", None))
         self.label_2.setText("")
-        self.lineEdit.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Username", None))
-        self.lineEdit_2.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Email", None))
-        self.lineEdit_3.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Phone Number", None))
+        self.username.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Username", None))
+        self.email.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Email", None))
+        self.phoneNumber.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Phone Number", None))
         self.addUserBtn.setText(QCoreApplication.translate("MainWindow", u"Add User", None))
     # retranslateUi
 

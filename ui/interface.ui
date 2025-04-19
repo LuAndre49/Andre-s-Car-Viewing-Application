@@ -7,11 +7,12 @@
     <x>0</x>
     <y>0</y>
     <width>1113</width>
-    <height>690</height>
+    <height>740</height>
    </rect>
   </property>
   <property name="font">
    <font>
+    <family>Segoe UI</family>
     <bold>true</bold>
    </font>
   </property>
@@ -22,48 +23,75 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">*{
-	border:none;
-	background-color:transparent;
-	background:transparent;
-	padding: 0;
-	margin: 0;
-	color: #fff;
-}
-#centralwidget, #homeBtn, #mainBodyContent, QLineEdit{
-	background-color:#1b1b27
-}
-#header, #mainBody{
-	background-color:#27263c;
-}
-#pushButton_2{
-	border: 1px solid #cc5bce;
-    border-radius: 19px;   /* Half of height to make it circular */
-    min-width: 38px;       /* Width = 2 × border-radius */
-    min-height: 38px;      /* Height = 2 × border-radius */
-    padding: 0;            /* Remove default padding */
+   <string notr="true">* {
+    border: none;
+    background: transparent;
+    padding: 0;
     margin: 0;
-    qproperty-iconSize: 38px;  /* Force icon size via CSS */
-	text-align:center;
-}
-QPushButton{
-	text-align:left;
-	padding: 5px 10px;
-	border-top-left-radius: 10px;
-	border-bottom-left-radius: 10px;
-}
-#homeBtn{
-	border-left: 3px solid #cc5bce;
-	font-weight: bold;
-}
-QLineEdit{
-	padding: 5px 10px;
-	border-radius: 5px;
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    color: #E2E8F0;
 }
 
-#addUserBtn{
-	background-color:  #cc5bce;
-	border-radius: 10px;
+#leftMenu {
+    background-color: #2B6CB0;
+}
+
+QPushButton {
+    color: #F7FAFC;
+    padding: 10px 14px;
+    border-radius: 8px;
+    text-align: left;
+	background-color: #4A5568;
+}
+
+QPushButton:hover {
+    background-color: #3B82C4;
+}
+
+/* Active button style */
+#homeBtn {
+    background-color: #1A365D;
+    border-left: 4px solid #E6F0FA;
+    font-weight: bold;
+}
+
+/* Main Content Background */
+#mainBody {
+    background-color: #1A202C; 
+}
+
+/* Header */
+#header {
+    background-color: #2D3748;
+    padding: 10px;
+}
+
+/* Add User Panel */
+#rightMenu {
+    background-color: #2B6CB0;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+/* Inputs */
+QLineEdit {
+    background-color: #FFFFFF;
+    padding: 6px 10px;
+    border-radius: 5px;
+    border: 1px solid #CBD5E0;
+    color: #2D3748;
+}
+
+/* Add User Button */
+#addUserBtn {
+    background-color: #4A5568;
+    color: white;
+    border-radius: 8px;
+    padding: 6px 12px;
+}
+
+#addUserBtn:hover {
+    background-color: #1A365D;
 }
 </string>
   </property>
@@ -135,7 +163,7 @@ QLineEdit{
            <widget class="QLabel" name="label">
             <property name="font">
              <font>
-              <family>Bauhaus</family>
+              <family>Segoe UI</family>
               <pointsize>16</pointsize>
               <bold>true</bold>
              </font>
@@ -393,7 +421,7 @@ QLineEdit{
                    <cursorShape>PointingHandCursor</cursorShape>
                   </property>
                   <property name="text">
-                   <string>My Account</string>
+                   <string>Accounts</string>
                   </property>
                   <property name="icon">
                    <iconset resource="../Qss/icons/_icons.qrc">
@@ -509,6 +537,7 @@ QLineEdit{
               </property>
               <property name="font">
                <font>
+                <family>Segoe UI</family>
                 <pointsize>50</pointsize>
                </font>
               </property>
@@ -529,6 +558,7 @@ QLineEdit{
               </property>
               <property name="font">
                <font>
+                <family>Segoe UI</family>
                 <pointsize>50</pointsize>
                </font>
               </property>
@@ -549,6 +579,7 @@ QLineEdit{
               </property>
               <property name="font">
                <font>
+                <family>Segoe UI</family>
                 <pointsize>50</pointsize>
                </font>
               </property>
@@ -569,6 +600,7 @@ QLineEdit{
               </property>
               <property name="font">
                <font>
+                <family>Segoe UI</family>
                 <pointsize>50</pointsize>
                </font>
               </property>
@@ -578,24 +610,119 @@ QLineEdit{
              </widget>
             </widget>
             <widget class="QWidget" name="accountPage">
-             <widget class="QLabel" name="label_4">
-              <property name="geometry">
-               <rect>
-                <x>280</x>
-                <y>340</y>
-                <width>291</width>
-                <height>151</height>
-               </rect>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>50</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Account</string>
-              </property>
-             </widget>
+             <layout class="QVBoxLayout" name="verticalLayout_10">
+              <item>
+               <widget class="QWidget" name="widget_3" native="true">
+                <layout class="QVBoxLayout" name="verticalLayout_11">
+                 <item>
+                  <widget class="QFrame" name="frame_6">
+                   <property name="frameShape">
+                    <enum>QFrame::Shape::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Shadow::Raised</enum>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_5">
+                    <item alignment="Qt::AlignmentFlag::AlignLeft">
+                     <widget class="QLabel" name="label_4">
+                      <property name="font">
+                       <font>
+                        <family>Segoe UI</family>
+                        <pointsize>25</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Accounts</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item alignment="Qt::AlignmentFlag::AlignRight">
+                     <widget class="QPushButton" name="showUserFormBtn">
+                      <property name="font">
+                       <font>
+                        <family>Segoe UI</family>
+                        <bold>true</bold>
+                       </font>
+                      </property>
+                      <property name="cursor">
+                       <cursorShape>PointingHandCursor</cursorShape>
+                      </property>
+                      <property name="text">
+                       <string>Add User</string>
+                      </property>
+                      <property name="icon">
+                       <iconset resource="../Qss/icons/_icons.qrc">
+                        <normaloff>:/material_design/icons/material_design/add_circle.png</normaloff>:/material_design/icons/material_design/add_circle.png</iconset>
+                      </property>
+                      <property name="iconSize">
+                       <size>
+                        <width>24</width>
+                        <height>24</height>
+                       </size>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QTableWidget" name="tableWidget">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>500</width>
+                     <height>700</height>
+                    </size>
+                   </property>
+                   <attribute name="horizontalHeaderMinimumSectionSize">
+                    <number>50</number>
+                   </attribute>
+                   <attribute name="horizontalHeaderDefaultSectionSize">
+                    <number>160</number>
+                   </attribute>
+                   <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+                    <bool>false</bool>
+                   </attribute>
+                   <attribute name="horizontalHeaderStretchLastSection">
+                    <bool>false</bool>
+                   </attribute>
+                   <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+                    <bool>false</bool>
+                   </attribute>
+                   <attribute name="verticalHeaderStretchLastSection">
+                    <bool>false</bool>
+                   </attribute>
+                   <column>
+                    <property name="text">
+                     <string>ID</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Email</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Username</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Phone Number</string>
+                    </property>
+                   </column>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
             </widget>
             <widget class="QWidget" name="settingsPage">
              <widget class="QLabel" name="label_10">
@@ -609,6 +736,7 @@ QLineEdit{
               </property>
               <property name="font">
                <font>
+                <family>Segoe UI</family>
                 <pointsize>50</pointsize>
                </font>
               </property>
@@ -629,6 +757,7 @@ QLineEdit{
               </property>
               <property name="font">
                <font>
+                <family>Segoe UI</family>
                 <pointsize>50</pointsize>
                </font>
               </property>
@@ -649,6 +778,7 @@ QLineEdit{
               </property>
               <property name="font">
                <font>
+                <family>Segoe UI</family>
                 <pointsize>50</pointsize>
                </font>
               </property>
@@ -663,7 +793,7 @@ QLineEdit{
         </widget>
        </item>
        <item>
-        <widget class="QWidget" name="rightMenu" native="true">
+        <widget class="QCustomSlideMenu" name="rightMenu" native="true">
          <property name="minimumSize">
           <size>
            <width>200</width>
@@ -673,6 +803,12 @@ QLineEdit{
          <layout class="QVBoxLayout" name="verticalLayout_7">
           <item alignment="Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop">
            <widget class="QWidget" name="widget_2" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>164</width>
+              <height>262</height>
+             </size>
+            </property>
             <layout class="QVBoxLayout" name="verticalLayout_8">
              <item alignment="Qt::AlignmentFlag::AlignHCenter">
               <widget class="QLabel" name="label_2">
@@ -709,21 +845,21 @@ QLineEdit{
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_9">
                 <item>
-                 <widget class="QLineEdit" name="lineEdit">
+                 <widget class="QLineEdit" name="username">
                   <property name="placeholderText">
                    <string>Username</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_2">
+                 <widget class="QLineEdit" name="email">
                   <property name="placeholderText">
                    <string>Email</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_3">
+                 <widget class="QLineEdit" name="phoneNumber">
                   <property name="placeholderText">
                    <string>Phone Number</string>
                   </property>
@@ -736,6 +872,7 @@ QLineEdit{
               <widget class="QPushButton" name="addUserBtn">
                <property name="font">
                 <font>
+                 <family>Segoe UI</family>
                  <bold>true</bold>
                 </font>
                </property>

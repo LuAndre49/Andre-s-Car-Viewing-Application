@@ -43,13 +43,14 @@
       ],
       "Style": [
         {
-          "Active": "background-color: #1b1b27; border-left: 3px solid #cc5bce; font-weight: bold;",
-          "NotActive": "background-color: transparent; border: none"
+          "Active": "background-color: #1A365D; border-left: 3px solid #E6F0FA; font-weight: bold;",
+          "NotActive": "background-color: transparent; border: none" 
         }
       ]
     }
   ],
-  "QCustomSlideMenu": [{
+  "QCustomSlideMenu": [
+    {
     "name": "leftMenu",
     "defaultSize": [{
       "width": 0,
@@ -74,7 +75,36 @@
       "animationDuration": 500,
       "animationEasingCurve": "Linear"
     }]
-  }],
+    
+  },
+  {
+    "name": "rightMenu",
+    "defaultSize": [{
+      "width": 0,
+      "height": "parent"
+    }],
+    "collapsedSize": [{
+      "width": 0,
+      "height": "parent"
+    }],
+    "expandedSize": [{
+      "width": 200,
+      "height": "parent"
+    }],
+    "toggleButton": [{
+      "buttonName": "showUserFormBtn",
+      "icons": [{
+        "whenMenuIsCollapsed": ":/feather/icons/feather/plus-square.png",
+        "whenMenuIsExpanded": ":/feather/icons/feather/window_close.png"
+      }]
+    }],
+    "menuTransitionAnimation": [{
+      "animationDuration": 500,
+      "animationEasingCurve": "Linear"
+    }]
+    
+  }
+],
   "QStackedWidget": {
     "mainPages": {
       "transition": {
