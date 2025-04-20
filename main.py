@@ -1,18 +1,9 @@
-########################################################################
-## QT GUI BY SPINN TV(YOUTUBE)
-########################################################################
-
-########################################################################
-## IMPORTS
-########################################################################
+# IMPORTS
 import os
 import sys
-########################################################################
+
 # IMPORT GUI FILE
 from ui.ui_interface import *
-########################################################################
-
-########################################################################
 # IMPORT Custom widgets
 from Custom_Widgets import *
 from Custom_Widgets.QAppSettings import QAppSettings
@@ -21,13 +12,9 @@ from PySide6.QtCore import QEasingCurve
 # For spider
 from run_scraper import run_scraper
 from load_car_data import load_car_listings
-from ui.carsPage import CarsPage
-from ui.carDetailsPage import CarDetailsPage
-########################################################################
+from ui.cars_page import CarsPage
+from ui.car_detailed_page import CarDetailsPage
 
-########################################################################
-## MAIN WINDOW CLASS
-########################################################################
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         QMainWindow.__init__(self)
@@ -37,12 +24,18 @@ class MainWindow(QMainWindow):
         loadJsonStyle(self, self.ui, jsonFiles = {
             "json-styles/style.json"
         }) 
+
+        # Add page animations
         animatePageTransitions(self)
-        run_scraper()
+
+        # Run scraper then save car data
+        #run_scraper()
         car_data = load_car_listings()
-        cars_layout = QVBoxLayout(self.ui.carsPage)  # <-- Add to existing QWidget
-        self.cars_page = CarsPage(car_data, self.show_car_details)
-        cars_layout.addWidget(self.cars_page)
+
+        # Create vertical box layout to contain the cars to be displayed in the cars page
+        cars_layout = QVBoxLayout(self.ui.carsPage) 
+        # Add the a widget containing all the car data
+        cars_layout.addWidget(CarsPage(car_data, self.show_car_details))
 
         self.show() 
 
@@ -85,19 +78,11 @@ def animatePageTransitions(self):
                     lambda _, p=page_name: stacked.slideToWidget(getattr(self.ui, p))
                 )
 
-
-########################################################################
-## EXECUTE APP
-########################################################################
+# EXECUTE APP
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    ########################################################################
-    ## 
-    ########################################################################
     
     window = MainWindow()
     window.show()
     sys.exit(app.exec_())
-########################################################################
-## END===>
-########################################################################  
+  
