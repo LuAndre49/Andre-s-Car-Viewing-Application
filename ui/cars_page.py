@@ -3,34 +3,51 @@ from ui.car_widgets import CarBox
 
 
 class CarsPage(QWidget):
-    def __init__(self, car_data, on_car_click):
+    def __init__(self, car_data, on_car_click, image_cache):
         super().__init__()
+        self.car_data_all = car_data
+        self.on_car_click = on_car_click
+        self.image_cache = image_cache
+        self.max_cars_per_row = 3
+        
 
-        layout = QVBoxLayout(self)
+        self.page_layout = QVBoxLayout(self)
         
         # Scroll area for car listings
-        scroll_area = QScrollArea()
-        scroll_area.setWidgetResizable(True)
-        container = QWidget()
-        grid_layout = QGridLayout()
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidgetResizable(True)
 
-        # Number of cars per row
-        max_cars_per_row = 3
-        # For each car
-        for index, car in enumerate(car_data):
-            # Compute their position in the grid
-            row = index // max_cars_per_row
-            col = index % max_cars_per_row
-            # Create car box for them to be added to the grid
-            car_box = CarBox(car, on_car_click)
-            car_box.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-            grid_layout.addWidget(car_box, row, col)
+        self.container = QWidget()
+        self.grid_layout = QGridLayout()
+        self.grid_layout.setSpacing(15)
+        self.grid_layout.setContentsMargins(15, 15, 15, 15)
 
-        grid_layout.setHorizontalSpacing(20)
-        grid_layout.setVerticalSpacing(20)
-        grid_layout.setContentsMargins(10,10,10,10)
-        container.setLayout(grid_layout)
-        scroll_area.setWidget(container)
+        self.container.setLayout(self.grid_layout)
+        self.scroll_area.setWidget(self.container)
+        self.page_layout.addWidget(self.scroll_area)
+        self.setLayout(self.page_layout)
         
-        layout.addWidget(scroll_area)
-        self.setLayout(layout)
+        self.display_cars(self.car_data_all)
+    def display_cars(self, data):
+        while self.grid_layout.count() > 0:
+            child = self.grid_layout.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
+
+        for index, car in enumerate(data):
+            row = index//self.max_cars_per_row
+            col = index%self.max_cars_per_row
+            box = CarBox(car, self.on_car_click, self.image_cache)
+            self.grid_layout.addWidget(box, row, col)
+
+    def filter_cars(self, query):
+        terms = query.lower().split()
+        filtered = []
+
+        for car in self.car_data_all:
+            title = car['title'].lower()
+            if all(term in title for term in terms):
+                filtered.append(car)
+        self.display_cars(filtered)
+
+    

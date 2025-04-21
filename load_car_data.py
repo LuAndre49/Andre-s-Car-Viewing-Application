@@ -2,7 +2,7 @@ import json
 import os
 
 def load_car_listings():
-    filepath = 'scraper/carscraper/used_cars.json'
+    filepath = 'scraper/carscraper/cars.json'
 
     if not os.path.exists(filepath):
         print(f"File not found: {filepath}")
@@ -11,7 +11,7 @@ def load_car_listings():
     with open(filepath, 'r', encoding='utf-8-sig') as f:
         content = f.read().strip()
         if not content:
-            print("Warning: used_cars.json is empty.")
+            print("Warning: cars.json is empty.")
             return []
 
         # Remove any BOM characters just in case

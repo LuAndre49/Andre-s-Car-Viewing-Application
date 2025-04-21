@@ -6,4 +6,4 @@ def run_scraper():
     project_dir = os.path.join(os.path.dirname(__file__), 'scraper', 'carscraper')
     
     # Use the Scrapy command to start the spider
-    subprocess.run(['scrapy', 'crawl', 'usedCarScraper'], cwd=project_dir)
+    subprocess.run(['scrapy', 'crawl', 'CarScraper'], cwd=project_dir)

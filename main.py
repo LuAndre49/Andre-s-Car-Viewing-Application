@@ -29,13 +29,38 @@ class MainWindow(QMainWindow):
         animatePageTransitions(self)
 
         # Run scraper then save car data
-        #run_scraper()
+        run_scraper()
         car_data = load_car_listings()
 
-        # Create vertical box layout to contain the cars to be displayed in the cars page
-        cars_layout = QVBoxLayout(self.ui.carsPage) 
-        # Add the a widget containing all the car data
-        cars_layout.addWidget(CarsPage(car_data, self.show_car_details))
+        # Create vertical box layout to contain the search bar and cars to be displayed in the cars page
+        cars_page_layout = QVBoxLayout(self.ui.carsPage) 
+        
+        search_layout = QHBoxLayout()
+        search_bar = QLineEdit()
+        search_bar.setPlaceholderText("Search for a car here")
+        search_bar.setFixedHeight(35)
+        search_bar.setStyleSheet("""
+            QLineEdit {
+                padding: 8px;
+                border-radius: 6px;
+                border: 1px solid #4B5563;
+                background-color: #1f2937; 
+                color: white;
+            }
+        """)
+        search_button = QPushButton("Search")
+        search_layout.addWidget(search_bar)
+        search_layout.addWidget(search_button)
+        
+        search_widget = QWidget()
+        search_widget.setLayout(search_layout)
+        cars_page_layout.addWidget(search_widget)
+
+        image_cache = {}
+        cars = CarsPage(car_data, self.show_car_details, image_cache)
+        cars_page_layout.addWidget(cars)
+        search_button.clicked.connect(lambda: cars.filter_cars(search_bar.text()))
+        search_bar.returnPressed.connect(lambda: cars.filter_cars(search_bar.text()))
 
         self.show() 
 

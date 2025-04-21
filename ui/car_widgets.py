@@ -5,11 +5,13 @@ from PySide6.QtCore import Qt
 import requests
 
 class CarBox(QWidget):
-    def __init__(self, car_data, on_click):
+    def __init__(self, car_data, on_click, image_cache=None):
         super().__init__()
 
         self.car_data = car_data
         self.on_click = on_click
+        self.image_cache = {}
+        self.setup_ui()
         self.threadpool = QThreadPool.globalInstance()
 
         # Set up layout for the car box
@@ -24,13 +26,37 @@ class CarBox(QWidget):
         car_name = QLabel(self.car_data['title'])
         car_name.setAlignment(Qt.AlignCenter)
         car_name.setWordWrap(True)
+        car_name.setStyleSheet("""
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            padding-bottom: 4px;
+        """)
+
         # Add car price
         car_price = QLabel(self.car_data['price'])
         car_price.setAlignment(Qt.AlignCenter)
+        car_price.setStyleSheet("""
+            font-size: 18px;
+            font-weight: bold;
+            color: #00d084;
+            padding-top: 4px;
+        """)
         
         # Button to view details
         button = QPushButton("View Details")
         button.clicked.connect(lambda: self.on_click(self.car_data))
+        button.setStyleSheet("""
+            QPushButton {
+                background-color: #059669;
+                color: white;
+                border-radius: 6px;
+                padding: 6px;
+            }
+            QPushButton:hover {
+                background-color: #10b981;
+            }
+        """)
 
         # Add widgets to layout
         layout.addWidget(self.car_image)
@@ -43,8 +69,8 @@ class CarBox(QWidget):
 
         self.setStyleSheet("""
             #CarBox {
-                background-color: #2e2e2e;
-                border: 2px solid #555;
+                background-color: #334155;
+                border: 1px solid #3c4a5a;
                 border-radius: 12px;
                 padding: 10px;
             }
@@ -56,6 +82,14 @@ class CarBox(QWidget):
         self.setMaximumWidth(500)
         self.load_image_async()
 
+
+    def setup_ui(self):
+        image_path = self.car_data['image']
+        if image_path in self.image_cache:
+            pixmap = self.image_cache[image_path]
+        else:
+            pixmap = QPixmap(image_path)
+            self.image_cache[image_path] = pixmap
     def load_image_async(self):
         loader = ImageLoader(self.car_data['image'])
         loader.signals.finished.connect(self.set_image)

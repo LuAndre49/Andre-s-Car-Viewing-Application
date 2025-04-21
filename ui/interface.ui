@@ -148,7 +148,7 @@ QLineEdit {
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../Qss/icons/_icons.qrc">
+             <iconset>
               <normaloff>:/feather/icons/feather/align-justify.png</normaloff>:/feather/icons/feather/align-justify.png</iconset>
             </property>
             <property name="iconSize">
@@ -194,7 +194,7 @@ QLineEdit {
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../Qss/icons/_icons.qrc">
+             <iconset>
               <normaloff>:/feather/icons/feather/search.png</normaloff>:/feather/icons/feather/search.png</iconset>
             </property>
             <property name="iconSize">
@@ -214,7 +214,7 @@ QLineEdit {
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../Qss/icons/_icons.qrc">
+             <iconset>
               <normaloff>:/feather/icons/feather/bell.png</normaloff>:/feather/icons/feather/bell.png</iconset>
             </property>
             <property name="iconSize">
@@ -234,7 +234,7 @@ QLineEdit {
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../Qss/icons/_icons.qrc">
+             <iconset>
               <normaloff>:/feather/icons/feather/user.png</normaloff>:/feather/icons/feather/user.png</iconset>
             </property>
             <property name="iconSize">
@@ -368,7 +368,7 @@ QLineEdit {
                    <string>Home</string>
                   </property>
                   <property name="icon">
-                   <iconset resource="../Qss/icons/_icons.qrc">
+                   <iconset>
                     <normaloff>:/feather/icons/feather/home.png</normaloff>:/feather/icons/feather/home.png</iconset>
                   </property>
                  </widget>
@@ -382,7 +382,7 @@ QLineEdit {
                    <string>Cars</string>
                   </property>
                   <property name="icon">
-                   <iconset resource="../Qss/icons/_icons.qrc">
+                   <iconset>
                     <normaloff>:/font_awesome_solid/icons/font_awesome/solid/car.png</normaloff>:/font_awesome_solid/icons/font_awesome/solid/car.png</iconset>
                   </property>
                  </widget>
@@ -396,7 +396,7 @@ QLineEdit {
                    <string>Compare</string>
                   </property>
                   <property name="icon">
-                   <iconset resource="../Qss/icons/_icons.qrc">
+                   <iconset>
                     <normaloff>:/font_awesome_solid/icons/font_awesome/solid/scale-unbalanced.png</normaloff>:/font_awesome_solid/icons/font_awesome/solid/scale-unbalanced.png</iconset>
                   </property>
                  </widget>
@@ -410,7 +410,7 @@ QLineEdit {
                    <string>News</string>
                   </property>
                   <property name="icon">
-                   <iconset resource="../Qss/icons/_icons.qrc">
+                   <iconset>
                     <normaloff>:/font_awesome_regular/icons/font_awesome/regular/newspaper.png</normaloff>:/font_awesome_regular/icons/font_awesome/regular/newspaper.png</iconset>
                   </property>
                  </widget>
@@ -424,7 +424,7 @@ QLineEdit {
                    <string>Accounts</string>
                   </property>
                   <property name="icon">
-                   <iconset resource="../Qss/icons/_icons.qrc">
+                   <iconset>
                     <normaloff>:/feather/icons/feather/user.png</normaloff>:/feather/icons/feather/user.png</iconset>
                   </property>
                  </widget>
@@ -478,7 +478,7 @@ QLineEdit {
                    <string>Settings</string>
                   </property>
                   <property name="icon">
-                   <iconset resource="../Qss/icons/_icons.qrc">
+                   <iconset>
                     <normaloff>:/feather/icons/feather/settings.png</normaloff>:/feather/icons/feather/settings.png</iconset>
                   </property>
                  </widget>
@@ -492,7 +492,7 @@ QLineEdit {
                    <string>Help</string>
                   </property>
                   <property name="icon">
-                   <iconset resource="../Qss/icons/_icons.qrc">
+                   <iconset>
                     <normaloff>:/feather/icons/feather/help-circle.png</normaloff>:/feather/icons/feather/help-circle.png</iconset>
                   </property>
                  </widget>
@@ -506,7 +506,7 @@ QLineEdit {
                    <string>About</string>
                   </property>
                   <property name="icon">
-                   <iconset resource="../Qss/icons/_icons.qrc">
+                   <iconset>
                     <normaloff>:/feather/icons/feather/info.png</normaloff>:/feather/icons/feather/info.png</iconset>
                   </property>
                  </widget>
@@ -546,27 +546,7 @@ QLineEdit {
               </property>
              </widget>
             </widget>
-            <widget class="QWidget" name="carsPage">
-             <widget class="QLabel" name="label_5">
-              <property name="geometry">
-               <rect>
-                <x>360</x>
-                <y>370</y>
-                <width>291</width>
-                <height>151</height>
-               </rect>
-              </property>
-              <property name="font">
-               <font>
-                <family>Segoe UI</family>
-                <pointsize>50</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Cars</string>
-              </property>
-             </widget>
-            </widget>
+            <widget class="QWidget" name="carsPage"/>
             <widget class="QWidget" name="comparePage">
              <widget class="QLabel" name="label_6">
               <property name="geometry">
@@ -651,7 +631,7 @@ QLineEdit {
                        <string>Add User</string>
                       </property>
                       <property name="icon">
-                       <iconset resource="../Qss/icons/_icons.qrc">
+                       <iconset>
                         <normaloff>:/material_design/icons/material_design/add_circle.png</normaloff>:/material_design/icons/material_design/add_circle.png</iconset>
                       </property>
                       <property name="iconSize">
@@ -828,7 +808,7 @@ QLineEdit {
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="../Qss/icons/_icons.qrc">:/feather/icons/feather/edit-2.png</pixmap>
+                <pixmap>:/feather/icons/feather/edit-2.png</pixmap>
                </property>
                <property name="scaledContents">
                 <bool>true</bool>
@@ -883,7 +863,7 @@ QLineEdit {
                 <string>Add User</string>
                </property>
                <property name="icon">
-                <iconset resource="../Qss/icons/_icons.qrc">
+                <iconset>
                  <normaloff>:/material_design/icons/material_design/add.png</normaloff>:/material_design/icons/material_design/add.png</iconset>
                </property>
                <property name="iconSize">

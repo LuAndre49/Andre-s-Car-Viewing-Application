@@ -2,14 +2,14 @@ import scrapy
 import re
 from urllib.parse import urljoin
 
-class UsedCarScraper(scrapy.Spider):
-    name = 'usedCarScraper'
+class CarScraper(scrapy.Spider):
+    name = 'CarScraper'
     allowed_domains = ['philkotse.com']
-    start_urls = ['https://philkotse.com/used-cars-for-sale']
+    start_urls = ['https://philkotse.com/cars-for-sale']
     max_pages = 50  # Adjust as needed
     custom_settings = {
         'FEEDS': {
-            'used_cars.json': {
+            'cars.json': {
                 'format': 'json',
                 'encoding': 'utf-8-sig',
                 'overwrite': True
@@ -44,7 +44,7 @@ class UsedCarScraper(scrapy.Spider):
                 'transmission': transmission,
                 'year': car.css('ul.tag li:nth-child(2)::text').get(),
                 'mileage': car.css('li[data-tag="numOfKm"]::text').get(),
-                'status': car.css('li.label-used::text').get(),
+                'status': car.css('li.label-new::text, li.label-used::text').get(default='').strip(),
                 'link': urljoin(response.url, car.css('a::attr(href)').get()),
                 'image': car.css('img::attr(data-src)').get()
 
@@ -53,9 +53,9 @@ class UsedCarScraper(scrapy.Spider):
         if current_page < self.max_pages:
             # If we're on the first page, the next page should be '/p2'
             if current_page == 1:
-                next_url = "https://philkotse.com/used-cars-for-sale/p2"
+                next_url = "https://philkotse.com/cars-for-sale/p2"
             else:
-                next_url = f"https://philkotse.com/used-cars-for-sale/p{current_page + 1}"
+                next_url = f"https://philkotse.com/cars-for-sale/p{current_page + 1}"
 
             yield scrapy.Request(url=next_url, callback=self.parse)
     def extract_transmission_from_title(self, title):

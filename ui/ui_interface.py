@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'interfaceLYTaQS.ui'
+## Form generated from reading UI file 'interfacejZkKdl.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -335,10 +335,6 @@ class Ui_MainWindow(object):
         self.mainPages.addWidget(self.homePage)
         self.carsPage = QWidget()
         self.carsPage.setObjectName(u"carsPage")
-        self.label_5 = QLabel(self.carsPage)
-        self.label_5.setObjectName(u"label_5")
-        self.label_5.setGeometry(QRect(360, 370, 291, 151))
-        self.label_5.setFont(font2)
         self.mainPages.addWidget(self.carsPage)
         self.comparePage = QWidget()
         self.comparePage.setObjectName(u"comparePage")
@@ -535,7 +531,6 @@ class Ui_MainWindow(object):
         self.helpBtn.setText(QCoreApplication.translate("MainWindow", u"Help", None))
         self.aboutBtn.setText(QCoreApplication.translate("MainWindow", u"About", None))
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"Home", None))
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Cars", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Compare", None))
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"News", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Accounts", None))
