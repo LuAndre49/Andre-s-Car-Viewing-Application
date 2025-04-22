@@ -11,9 +11,9 @@ from PySide6.QtCore import QEasingCurve
 
 # For spider
 from run_scraper import run_scraper
-from load_car_data import load_car_listings
-from ui.cars_page import CarsPage
-from ui.car_detailed_page import CarDetailsPage
+from etl.extract import extract_car_listings
+from ui.pages.cars_page import CarsPage
+from ui.pages.car_detailed_page import CarDetailsPage
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -22,7 +22,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
 
         loadJsonStyle(self, self.ui, jsonFiles = {
-            "json-styles/style.json"
+            "styles/style.json"
         }) 
 
         # Add page animations
@@ -30,7 +30,7 @@ class MainWindow(QMainWindow):
 
         # Run scraper then save car data
         run_scraper()
-        car_data = load_car_listings()
+        car_data = extract_car_listings()
 
         # Create vertical box layout to contain the search bar and cars to be displayed in the cars page
         cars_page_layout = QVBoxLayout(self.ui.carsPage) 

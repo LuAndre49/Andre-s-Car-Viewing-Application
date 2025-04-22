@@ -1,0 +1,129 @@
+{
+  "ShowLogs": true,
+  "QMainWindow": [
+    {
+      "tittle": "Andre's Web Scraper App"
+    }
+  ],
+  "QSettings": [
+    {
+      "ThemeSettings": [
+        {
+          "CustomTheme": [
+            {
+              "Background-color": "#000000",
+              "Text-color": "#FFFFFF",
+              "Accent-color": "#0000FF",
+              "Icons-color": "#FFFFFF",
+              "Theme-name": "Default-theme",
+              "Default-Theme": true
+            }
+          ]
+        }
+      ],
+      "AppSettings": {
+        "OrginizationName": "Andre's Web Scraper App",
+        "ApplicationName": "Andre's Web Scraper App Company",
+        "OrginizationDormain": "Andre's Web Scraper App.org"
+      }
+    }
+  ],
+  "QtBinding": "PySide6",
+  "QPushButtonGroup": [
+    {
+      "Buttons": [
+        "homeBtn",
+        "carsBtn",
+        "accountBtn",
+        "newsBtn",
+        "compareBtn",
+        "settingsBtn",
+        "aboutBtn",
+        "helpBtn"
+      ],
+      "Style": [
+        {
+          "Active": "background-color: #1A365D; border-left: 3px solid #E6F0FA; font-weight: bold;",
+          "NotActive": "background-color: transparent; border: none" 
+        }
+      ]
+    }
+  ],
+  "QCustomSlideMenu": [
+    {
+    "name": "leftMenu",
+    "defaultSize": [{
+      "width": 0,
+      "height": "parent"
+    }],
+    "collapsedSize": [{
+      "width": 0,
+      "height": "parent"
+    }],
+    "expandedSize": [{
+      "width": 200,
+      "height": "parent"
+    }],
+    "toggleButton": [{
+      "buttonName": "menuBtn",
+      "icons": [{
+        "whenMenuIsCollapsed": ":/feather/icons/feather/align-justify.png",
+        "whenMenuIsExpanded": ":/feather/icons/feather/chevron-left.png"
+      }]
+    }],
+    "menuTransitionAnimation": [{
+      "animationDuration": 500,
+      "animationEasingCurve": "Linear"
+    }]
+    
+  },
+  {
+    "name": "rightMenu",
+    "defaultSize": [{
+      "width": 0,
+      "height": "parent"
+    }],
+    "collapsedSize": [{
+      "width": 0,
+      "height": "parent"
+    }],
+    "expandedSize": [{
+      "width": 200,
+      "height": "parent"
+    }],
+    "toggleButton": [{
+      "buttonName": "showUserFormBtn",
+      "icons": [{
+        "whenMenuIsCollapsed": ":/feather/icons/feather/plus-square.png",
+        "whenMenuIsExpanded": ":/feather/icons/feather/window_close.png"
+      }]
+    }],
+    "menuTransitionAnimation": [{
+      "animationDuration": 500,
+      "animationEasingCurve": "Linear"
+    }]
+    
+  }
+],
+  "QStackedWidget": {
+    "mainPages": {
+      "transition": {
+        "type": "slide",  
+        "duration": 500,
+        "easing": "OutBack",
+        "direction": "horizontal"
+      },
+      "navigation": {
+        "homeBtn": "homePage",
+        "carsBtn": "carsPage",
+        "accountBtn": "accountPage",
+        "newsBtn": "newsPage",
+        "compareBtn": "comparePage",
+        "settingsBtn": "settingsPage",
+        "aboutBtn": "aboutPage",
+        "helpBtn": "helpPage"
+      }
+    }
+  }
+  
+}

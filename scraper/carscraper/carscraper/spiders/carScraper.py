@@ -1,15 +1,21 @@
 import scrapy
 import re
 from urllib.parse import urljoin
+from pathlib import Path
+
+# compute project root same way
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
+RAW_JSON     = PROJECT_ROOT / "data" / "raw" / "cars.json"
+RAW_JSON.parent.mkdir(parents=True, exist_ok=True)
 
 class CarScraper(scrapy.Spider):
     name = 'CarScraper'
     allowed_domains = ['philkotse.com']
     start_urls = ['https://philkotse.com/cars-for-sale']
-    max_pages = 50  # Adjust as needed
+    max_pages = 3  # Adjust as needed
     custom_settings = {
         'FEEDS': {
-            'cars.json': {
+            str(RAW_JSON): {
                 'format': 'json',
                 'encoding': 'utf-8-sig',
                 'overwrite': True
