@@ -3,17 +3,17 @@ import os
 import sys
 
 # IMPORT GUI FILE
-from ui.ui_interface import *
+from app.gui.ui_interface import *
 # IMPORT Custom widgets
 from Custom_Widgets import *
 from Custom_Widgets.QAppSettings import QAppSettings
 from PySide6.QtCore import QEasingCurve
 
 # For spider
-from run_scraper import run_scraper
-from etl.extract import extract_car_listings
-from ui.pages.cars_page import CarsPage
-from ui.pages.car_detailed_page import CarDetailsPage
+from app.scraper.run_scraper import run_scraper
+from app.etl.extract import extract_car_listings
+from app.gui.pages.cars_page import CarsPage
+from app.gui.pages.car_detailed_page import CarDetailsPage
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -22,7 +22,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
 
         loadJsonStyle(self, self.ui, jsonFiles = {
-            "styles/style.json"
+            "app/styles/style.json"
         }) 
 
         # Add page animations
