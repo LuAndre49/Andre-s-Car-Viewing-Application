@@ -9,9 +9,8 @@ from Custom_Widgets import *
 from Custom_Widgets.QAppSettings import QAppSettings
 from PySide6.QtCore import QEasingCurve
 
-# For spider
-from app.scraper.run_scraper import run_scraper
-from app.etl.extract import extract_car_listings
+from app.etl.etl import run_etl
+from app.gui.utils.db_reader import fetch_car_data
 from app.gui.pages.cars_page import CarsPage
 from app.gui.pages.car_detailed_page import CarDetailsPage
 
@@ -20,6 +19,7 @@ class MainWindow(QMainWindow):
         QMainWindow.__init__(self)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.ui.setup_database_table_view() 
 
         loadJsonStyle(self, self.ui, jsonFiles = {
             "app/styles/style.json"
@@ -29,9 +29,10 @@ class MainWindow(QMainWindow):
         animatePageTransitions(self)
 
         # Run scraper then save car data
-        run_scraper()
-        car_data = extract_car_listings()
-
+        #run_scraper()
+        #car_data = extract_car_listings()
+        run_etl()
+        car_data = fetch_car_data()
         # Create vertical box layout to contain the search bar and cars to be displayed in the cars page
         cars_page_layout = QVBoxLayout(self.ui.carsPage) 
         

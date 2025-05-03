@@ -19,6 +19,9 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
     QLabel, QLineEdit, QMainWindow, QPushButton,
     QSizePolicy, QSpacerItem, QTableWidget, QTableWidgetItem,
     QVBoxLayout, QWidget)
+from PySide6.QtSql import QSqlDatabase, QSqlTableModel
+from PySide6.QtWidgets import QTableView
+from pathlib import Path
 
 from Custom_Widgets.Widgets import (QCustomSlideMenu, QCustomStackedWidget)
 from Qss.icons import _icons_rc
@@ -386,7 +389,7 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_11.addWidget(self.frame_6)
-
+        """
         self.tableWidget = QTableWidget(self.widget_3)
         if (self.tableWidget.columnCount() < 4):
             self.tableWidget.setColumnCount(4)
@@ -413,7 +416,7 @@ class Ui_MainWindow(object):
         self.tableWidget.verticalHeader().setStretchLastSection(False)
 
         self.verticalLayout_11.addWidget(self.tableWidget)
-
+        """
 
         self.verticalLayout_10.addWidget(self.widget_3)
 
@@ -535,6 +538,7 @@ class Ui_MainWindow(object):
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"News", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Accounts", None))
         self.showUserFormBtn.setText(QCoreApplication.translate("MainWindow", u"Add User", None))
+        """
         ___qtablewidgetitem = self.tableWidget.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"ID", None));
         ___qtablewidgetitem1 = self.tableWidget.horizontalHeaderItem(1)
@@ -543,6 +547,7 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"Username", None));
         ___qtablewidgetitem3 = self.tableWidget.horizontalHeaderItem(3)
         ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"Phone Number", None));
+        """
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Help", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"About", None))
@@ -551,5 +556,31 @@ class Ui_MainWindow(object):
         self.email.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Email", None))
         self.phoneNumber.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Phone Number", None))
         self.addUserBtn.setText(QCoreApplication.translate("MainWindow", u"Add User", None))
-    # retranslateUi
+
+    def setup_database_table_view(self):
+        db_path = Path(__file__).resolve().parents[2] / "data" / "processed" / "cars.db"
+        db = QSqlDatabase.addDatabase("QSQLITE")
+
+        if db.databaseName() != str(db_path):  # Prevent resetting if already set
+            db.setDatabaseName(str(db_path))
+
+        if not db.open():
+            print("[ERROR] Could not open the database.")
+            return
+
+        # Set up model
+        model = QSqlTableModel(parent=None, db=db)
+        model.setTable("cars")
+        model.select()
+
+        # Set up view
+        table_view = QTableView()
+        table_view.setModel(model)
+        table_view.setSortingEnabled(True)
+        table_view.resizeColumnsToContents()
+        table_view.setSelectionBehavior(QTableView.SelectRows)
+        table_view.setEditTriggers(QTableView.NoEditTriggers)
+
+        # Add the view to the accountPage layout
+        self.verticalLayout_10.addWidget(table_view)
 

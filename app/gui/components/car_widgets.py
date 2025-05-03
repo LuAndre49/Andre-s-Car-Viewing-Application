@@ -3,6 +3,7 @@ from PySide6.QtCore import QRunnable, QThreadPool, Signal, QObject, Slot
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt
 import requests
+from app.settings.app_settings import AppSettings  
 
 class CarBox(QWidget):
     def __init__(self, car_data, on_click, image_cache=None):
@@ -32,9 +33,15 @@ class CarBox(QWidget):
             color: #ffffff;
             padding-bottom: 4px;
         """)
+        price = self.car_data.get('price')
 
-        # Add car price
-        car_price = QLabel(self.car_data['price'])
+        if price is None:
+            formatted_price = "PRICE ON REQUEST"
+        else:
+            formatted_price = AppSettings.format_price(price)
+
+        print(f"Final display price: {formatted_price}")
+        car_price = QLabel(formatted_price)
         car_price.setAlignment(Qt.AlignCenter)
         car_price.setStyleSheet("""
             font-size: 18px;
@@ -84,17 +91,21 @@ class CarBox(QWidget):
 
 
     def setup_ui(self):
-        image_path = self.car_data['image']
+        image_path = self.car_data.get('local_image_path') or self.car_data['image_url']
         if image_path in self.image_cache:
             pixmap = self.image_cache[image_path]
         else:
             pixmap = QPixmap(image_path)
             self.image_cache[image_path] = pixmap
+
     def load_image_async(self):
-        loader = ImageLoader(self.car_data['image'])
+        image_path = self.car_data.get('local_image_path') or self.car_data['image_url']
+        print(f"[DEBUG] Loading image from: {image_path}")
+        loader = ImageLoader(image_path)
         loader.signals.finished.connect(self.set_image)
         loader.signals.failed.connect(self.set_image_failed)
         self.threadpool.start(loader)
+
     def set_image(self, pixmap):
         self.car_image.setPixmap(pixmap.scaled(300, 300, Qt.KeepAspectRatio))
     def set_image_failed(self):
@@ -105,19 +116,23 @@ class ImageLoader(QRunnable):
         finished = Signal(QPixmap)
         failed = Signal()
 
-    def __init__(self, image_url):
+    def __init__(self, image_path):
         super().__init__()
-        self.image_url = image_url
+        self.image_path = image_path
         self.signals = self.Signals()
 
     @Slot()
     def run(self):
         try:
-            response = requests.get(self.image_url, timeout=10)
-            response.raise_for_status()
             pixmap = QPixmap()
-            pixmap.loadFromData(response.content)
+            if self.image_path.startswith("http"):
+                response = requests.get(self.image_path, timeout=10)
+                response.raise_for_status()
+                pixmap.loadFromData(response.content)
+            else:
+                if not pixmap.load(self.image_path):
+                    raise ValueError("Failed to load local image.")
             self.signals.finished.emit(pixmap)
         except Exception as e:
-            print(f"[ImageLoader] Failed to load: {self.image_url} - {e}")
+            print(f"[ImageLoader] Failed to load: {self.image_path} - {e}")
             self.signals.failed.emit()
