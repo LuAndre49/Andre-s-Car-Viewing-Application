@@ -33,22 +33,17 @@ class CarBox(QWidget):
             color: #ffffff;
             padding-bottom: 4px;
         """)
-        price = self.car_data.get('price')
 
-        if price is None:
-            formatted_price = "PRICE ON REQUEST"
-        else:
-            formatted_price = AppSettings.format_price(price)
 
-        print(f"Final display price: {formatted_price}")
-        car_price = QLabel(formatted_price)
-        car_price.setAlignment(Qt.AlignCenter)
-        car_price.setStyleSheet("""
+        self.car_price = QLabel()
+        self.car_price.setAlignment(Qt.AlignCenter)
+        self.car_price.setStyleSheet("""
             font-size: 18px;
             font-weight: bold;
             color: #00d084;
             padding-top: 4px;
         """)
+        self.update_price()
         
         # Button to view details
         button = QPushButton("View Details")
@@ -68,7 +63,7 @@ class CarBox(QWidget):
         # Add widgets to layout
         layout.addWidget(self.car_image)
         layout.addWidget(car_name)
-        layout.addWidget(car_price)
+        layout.addWidget(self.car_price)
         layout.addWidget(button)
         self.setLayout(layout)
         self.setObjectName("CarBox")
@@ -110,6 +105,15 @@ class CarBox(QWidget):
         self.car_image.setPixmap(pixmap.scaled(300, 300, Qt.KeepAspectRatio))
     def set_image_failed(self):
         self.car_image.setText("Image not available")
+    def update_price(self):
+        price = self.car_data.get("price")
+        if price is None:
+            formatted_price = "PRICE ON REQUEST"
+        else:
+            formatted_price = AppSettings.format_price(price)
+        print(f"[DEBUG] Display price: {formatted_price}")
+        self.car_price.setText(formatted_price)
+
 
 class ImageLoader(QRunnable):
     class Signals(QObject):

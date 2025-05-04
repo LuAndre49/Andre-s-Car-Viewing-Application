@@ -57,8 +57,16 @@ def transform(raw_listings, car_brands):
 
         if car['condition'] == 'New':
             year, trans, fuel, location = fetch_new_car_details(car['link'])
-            transmission = transmission or trans
-            fuel_type = fuel_type or fuel
+            if "Automatic" in trans and "Manual" in trans:
+                transmission = "Automatic/Manual"
+            else:
+                transmission = transmission or trans
+            if "Diesel" in fuel and "Gasoline" in fuel:
+                fuel_type = "Diesel/Gasoline"
+            elif "Hybrid" in fuel and "Electric" in fuel:
+                fuel_type = "Hybrid/Electric"
+            else:
+                fuel_type = fuel_type or fuel
             mileage = 'Not applicable'
         else:
             mileage = mileage.replace('km', '').replace(',', '').strip()
@@ -125,15 +133,20 @@ def fetch_new_car_details(url):
             value = cols[1].get_text(strip=True)
             if 'Transmission' in label:
                 transmission = value
-            elif 'Fuel Type' in label:
+            elif 'Fuel Type' in label or 'Energy Source' in label:
                 fuel_type = value
 
-        location = None
-        location_article = soup.select_one("article.dealer-listing p.small")
-        if location_article:
-            location = location_article.get_text(strip=True)
+        location = "Not specified"
+        dealer_article = soup.select_one("article.dealer-listing")
+        if dealer_article:
+            dealer_details = dealer_article.select_one("div.dealer-details")
+            if dealer_details:
+                location_tag = dealer_details.find("p")
+                if location_tag:
+                    location = location_tag.get_text(strip=True)
+
 
         return year, transmission, fuel_type, location
     except Exception as e:
         print(f"[ERROR] Failed to fetch details from {url}: {e}")
-        return None, None, None
+        return None, None, None, None

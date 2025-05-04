@@ -18,11 +18,11 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
     QLabel, QLineEdit, QMainWindow, QPushButton,
     QSizePolicy, QSpacerItem, QTableWidget, QTableWidgetItem,
-    QVBoxLayout, QWidget)
+    QVBoxLayout, QWidget, QComboBox, QStyleFactory)
 from PySide6.QtSql import QSqlDatabase, QSqlTableModel
 from PySide6.QtWidgets import QTableView
 from pathlib import Path
-
+from app.settings.app_settings import AppSettings
 from Custom_Widgets.Widgets import (QCustomSlideMenu, QCustomStackedWidget)
 from Qss.icons import _icons_rc
 
@@ -423,10 +423,38 @@ class Ui_MainWindow(object):
         self.mainPages.addWidget(self.accountPage)
         self.settingsPage = QWidget()
         self.settingsPage.setObjectName(u"settingsPage")
-        self.label_10 = QLabel(self.settingsPage)
-        self.label_10.setObjectName(u"label_10")
-        self.label_10.setGeometry(QRect(290, 290, 291, 151))
-        self.label_10.setFont(font2)
+        settings_layout = QVBoxLayout(self.settingsPage)
+        settings_layout.setContentsMargins(50, 50, 50, 50)
+        settings_layout.setSpacing(20)
+
+        currency_layout = QHBoxLayout()
+        currency_label = QLabel("Select Currency:")
+        currency_label.setStyleSheet("color: white; font-size: 16px;")
+
+        self.currency_selector = QComboBox()
+        self.currency_selector.addItems(["PHP", "USD", "CNY"])
+        self.currency_selector.setCurrentText(AppSettings.selected_currency)
+        self.currency_selector.currentTextChanged.connect(self.change_currency)
+        print("[DEBUG] Connected currency dropdown to handler.")
+        self.currency_selector.setStyleSheet("font-size: 16px; padding: 4px;")
+        self.currency_selector.setStyleSheet("""
+                                                QComboBox {
+                                                    background-color: #2c2c2c;
+                                                    color: white;
+                                                    border: 1px solid #555;
+                                                    padding: 5px 10px;
+                                                    font-size: 16px;
+                                                }
+                                                QComboBox::drop-down {
+                                                    border: none;
+                                                }
+                                            """)
+
+        currency_layout.addWidget(currency_label)
+        currency_layout.addWidget(self.currency_selector)
+        settings_layout.addLayout(currency_layout)
+
+
         self.mainPages.addWidget(self.settingsPage)
         self.helpPage = QWidget()
         self.helpPage.setObjectName(u"helpPage")
@@ -548,7 +576,7 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem3 = self.tableWidget.horizontalHeaderItem(3)
         ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"Phone Number", None));
         """
-        self.label_10.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
+        #self.label_10.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Help", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"About", None))
         self.label_2.setText("")
@@ -568,12 +596,11 @@ class Ui_MainWindow(object):
             print("[ERROR] Could not open the database.")
             return
 
-        # Set up model
         model = QSqlTableModel(parent=None, db=db)
         model.setTable("cars")
         model.select()
 
-        # Set up view
+        
         table_view = QTableView()
         table_view.setModel(model)
         table_view.setSortingEnabled(True)
@@ -581,6 +608,18 @@ class Ui_MainWindow(object):
         table_view.setSelectionBehavior(QTableView.SelectRows)
         table_view.setEditTriggers(QTableView.NoEditTriggers)
 
-        # Add the view to the accountPage layout
         self.verticalLayout_10.addWidget(table_view)
 
+    def set_cars_page(self, cars_page):
+        self.cars_page = cars_page
+
+    def change_currency(self, currency_code):
+        print(f"[DEBUG] Currency changed to: {currency_code}")
+        AppSettings.selected_currency = currency_code
+        AppSettings.currency_symbol = AppSettings.currency_symbols[currency_code]
+        print(f"[DEBUG] Currency symbol updated to: {AppSettings.currency_symbol}")
+        if hasattr(self, "cars_page") and self.cars_page:
+            print("[DEBUG] Refreshing all car prices...")
+            self.cars_page.refresh_all_prices()
+        else:
+            print("[DEBUG] No cars_page found to refresh.")

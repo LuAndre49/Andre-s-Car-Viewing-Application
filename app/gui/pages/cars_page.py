@@ -34,10 +34,12 @@ class CarsPage(QWidget):
             if child.widget():
                 child.widget().deleteLater()
 
+        self.car_boxes = []
         for index, car in enumerate(data):
             row = index//self.max_cars_per_row
             col = index%self.max_cars_per_row
             box = CarBox(car, self.on_car_click, self.image_cache)
+            self.car_boxes.append(box)
             self.grid_layout.addWidget(box, row, col)
 
     def filter_cars(self, query):
@@ -49,5 +51,12 @@ class CarsPage(QWidget):
             if all(term in title for term in terms):
                 filtered.append(car)
         self.display_cars(filtered)
+
+    def refresh_all_prices(self):
+        print("[DEBUG] refresh_all_prices called")
+        for box in getattr(self, "car_boxes", []):
+            print(f"[DEBUG] Updating price for car: {box.car_data.get('title')}")
+            box.update_price()
+
 
     

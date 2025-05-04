@@ -11,20 +11,20 @@ def create_table(conn):
     cursor.execute('''
          CREATE TABLE IF NOT EXISTS cars (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT,
-            price INTEGER,
+            title TEXT UNIQUE,
+            price REAL,
             link TEXT,
-            image_url TEXT,
             local_image_path TEXT,
             brand TEXT,
             model TEXT,
-            year TEXT,
+            year INTEGER,
             transmission TEXT,
             mileage TEXT,
             condition TEXT,
             fuel_type TEXT,
-            location TEXT
-        )
+            location TEXT,
+            image_url TEXT
+        );
     ''')
     conn.commit()
     
@@ -32,7 +32,6 @@ def create_table(conn):
 
 def insert_data(conn, cars):
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM cars")
 
     for car in cars:
         cursor.execute("""
@@ -48,7 +47,6 @@ def insert_data(conn, cars):
             car["transmission"], car["mileage"],
             car["condition"], car["fuel_type"], car["location"]
         ))
-
     conn.commit()
 
 def load(transformed_data):

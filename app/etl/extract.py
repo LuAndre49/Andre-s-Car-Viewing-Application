@@ -15,8 +15,8 @@ def extract(max_pages=1):
 
     listings = []
     brands = set()
-    brand_loaded = False  # flag to prevent re-clicking brand toggle
-
+    old_brand_loaded = False  # flag to prevent re-clicking brand toggle
+    new_brand_loaded = False  # flag to prevent re-clicking brand toggle
     try:
         for condition, base_url in URLS.items():
             for page in range(1, max_pages + 1):
@@ -58,14 +58,14 @@ def extract(max_pages=1):
                             stats = card.find_elements(By.CSS_SELECTOR, "span.small.reducedopacity")
                             listing["mileage"] = stats[0].text.strip() if len(stats) > 0 else ""
                             listing["transmission"] = stats[1].text.strip() if len(stats) > 1 else ""
+                            listing["fuel_type"] = stats[2].text.strip() if len(stats) > 2 else ""
 
                         listings.append(listing)
 
                     except Exception as e:
                         print(f"[WARN] Skipping a {condition} car due to error: {e}")
 
-                # Only load brand list once (shared sidebar)
-                if not brand_loaded:
+                if not new_brand_loaded and condition == 'New':
                     try:
                         
                         show_all_buttons = driver.find_elements(By.XPATH, "//a[contains(text(), 'Show All Car Make')]")
@@ -88,11 +88,32 @@ def extract(max_pages=1):
                                         #print(f"[INFO] Found brand: {brand_name}")
                                 except Exception as e:
                                     print(f"[WARN] Skipped brand item due to error: {e}")
-                        brand_loaded = True
-
+                        
+                        new_brand_loaded = True
+                
                     except Exception as e:
                         print(f"[ERROR] Brand scrape error: {e}")
 
+                elif not old_brand_loaded and condition == 'Used':
+                    try:
+                        brand_ul = driver.find_element(By.CSS_SELECTOR, "div#car-make-filter-list")
+                        brand_items = brand_ul.find_elements(By.TAG_NAME, "input")
+                        if not brand_items:
+                            print(f"[WARN] No brand items found in container on {url}")
+                        else:
+                            for brand in brand_items:
+                                try:
+                                    brand_name = brand.get_attribute("data-name").strip()
+                                    if brand_name:
+                                        brands.add(brand_name)
+                                        #print(f"[INFO] Found brand: {brand_name}")
+                                except Exception as e:
+                                    print(f"[WARN] Skipped brand item due to error: {e}")
+                        new_brand_loaded = True
+                    except Exception as e:
+                        print(f"[ERROR] Brand scrape error: {e}")
+                else:
+                    continue
                 time.sleep(1)
 
     finally:
