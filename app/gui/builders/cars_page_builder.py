@@ -46,7 +46,7 @@ def setup_cars_page(ui, car_data):
     image_cache = {}
     #cars = CarsPage(car_data, lambda car: show_car_details(car, ui), image_cache)
     #cars_page_layout.addWidget(cars)
-    cars = CarsPage(car_data, lambda c: ui.show_car_details(c), image_cache)
+    cars = CarsPage(car_data, lambda c: show_car_details(c, ui), image_cache)
     cars_page_layout.addWidget(cars)
     
     # Connect the search button and search bar to filter cars based on input

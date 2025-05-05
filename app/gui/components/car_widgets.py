@@ -3,7 +3,8 @@ from PySide6.QtCore import QRunnable, QThreadPool, Signal, QObject, Slot
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt
 import requests
-from app.settings.app_settings import AppSettings  
+from app.settings.app_settings import app_settings
+
 
 class CarBox(QWidget):
     def __init__(self, car_data, on_click, image_cache=None):
@@ -47,7 +48,7 @@ class CarBox(QWidget):
         
         # Button to view details
         button = QPushButton("View Details")
-        button.clicked.connect(lambda: self.on_click(self.car_data))
+        button.clicked.connect(lambda _, c=self.car_data: self.on_click(c))
         button.setStyleSheet("""
             QPushButton {
                 background-color: #059669;
@@ -95,7 +96,7 @@ class CarBox(QWidget):
 
     def load_image_async(self):
         image_path = self.car_data.get('local_image_path') or self.car_data['image_url']
-        print(f"[DEBUG] Loading image from: {image_path}")
+        #print(f"[DEBUG] Loading image from: {image_path}")
         loader = ImageLoader(image_path)
         loader.signals.finished.connect(self.set_image)
         loader.signals.failed.connect(self.set_image_failed)
@@ -110,8 +111,8 @@ class CarBox(QWidget):
         if price is None:
             formatted_price = "PRICE ON REQUEST"
         else:
-            formatted_price = AppSettings.format_price(price)
-        print(f"[DEBUG] Display price: {formatted_price}")
+            formatted_price = app_settings.format_price(price)
+        #(f"[DEBUG] Display price: {formatted_price}")
         self.car_price.setText(formatted_price)
 
 

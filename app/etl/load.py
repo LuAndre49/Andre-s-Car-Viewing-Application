@@ -23,7 +23,8 @@ def create_table(conn):
             condition TEXT,
             fuel_type TEXT,
             location TEXT,
-            image_url TEXT
+            image_url TEXT,
+            UNIQUE(title, link)
         );
     ''')
     conn.commit()
@@ -35,7 +36,7 @@ def insert_data(conn, cars):
 
     for car in cars:
         cursor.execute("""
-            INSERT OR REPLACE INTO cars (
+            INSERT OR IGNORE INTO cars (
                 title, price, link, image_url, local_image_path,
                 brand, model, year, transmission, mileage,
                 condition, fuel_type, location

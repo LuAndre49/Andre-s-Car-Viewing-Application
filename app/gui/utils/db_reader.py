@@ -12,7 +12,7 @@ def fetch_car_data():
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    cursor.execute("SELECT title, price, brand, model, year, transmission, mileage, condition, image_url FROM cars")
+    cursor.execute("SELECT title, price, link, image_url, local_image_path, brand, model, year, transmission, mileage, condition, fuel_type, location FROM cars")
     rows = cursor.fetchall()
     conn.close()
 
@@ -21,12 +21,16 @@ def fetch_car_data():
         car_data.append({
             "title": row[0],
             "price": row[1],
-            "brand": row[2],
-            "model": row[3],
-            "year": row[4],
-            "transmission": row[5],
-            "mileage": row[6],
-            "condition": row[7],
-            "image_url": row[8],
+            "link": row[2],
+            "image_url": row[3],
+            "local_image_path": row[4],
+            "brand": row[5],
+            "model": row[6],
+            "year": row[7],
+            "transmission": row[8],
+            "mileage": row[9],
+            "condition": row[10],
+            "fuel_type": row[11],
+            "location": row[12],
         })
     return car_data

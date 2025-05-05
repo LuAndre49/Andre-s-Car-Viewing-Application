@@ -1,36 +1,45 @@
-class AppSettings:
-    selected_currency = 'PHP'
-    currency_symbol = '₱'
-    distance_unit = 'km'
+from PySide6.QtCore import QObject, Signal
 
-    currency_conversion_rates = {
-        "PHP": 1,
-        "USD": 0.02,
-        "CNY": 0.16,
-    }
+class AppSettings(QObject):
+    settingsChanged = Signal()
 
-    currency_symbols = {
-        "PHP": '₱',
-        "USD": '$',
-        "CNY": '¥',
-    }
+    def __init__(self):
+        super().__init__()
+        self.selected_currency = 'PHP'
+        self.currency_symbol = '₱'
+        self.distance_unit = 'km'
 
-    @classmethod
-    def format_price(cls, value):
-        if isinstance(value, (int, float)):
-            rate = cls.currency_conversion_rates.get(cls.selected_currency)
-            symbol = cls.currency_symbols.get(cls.selected_currency)
-            converted_value = value * rate
-            print(f"[DEBUG] Formatting price for {value} in {cls.selected_currency}")
+        self.currency_conversion_rates = {
+            "PHP": 1,
+            "USD": 0.02,
+            "CNY": 0.16,
+        }
 
-            return f"{symbol}{converted_value:,}"
-        elif isinstance(value, str):
-            return value 
-        else:
-            return "N/A"
+        self.currency_symbols = {
+            "PHP": '₱',
+            "USD": '$',
+            "CNY": '¥',
+        }
 
-    @classmethod
-    def format_distance(cls, value: int | None) -> str:
+    def format_price(self, value):
+        if not isinstance(value, (int, float)):
+            return "PRICE ON REQUEST"  # handles None, strings, etc.
+
+        rate = self.currency_conversion_rates.get(self.selected_currency, 1)
+        symbol = self.currency_symbols.get(self.selected_currency, '')
+        converted_value = value * rate
+        return f"{symbol}{converted_value:,.0f}"
+
+    def format_distance(self, value: int | None) -> str:
         if value is None:
             return "N/A"
-        return f"{value:,} {cls.distance_unit}"
+        return f"{value:,} {self.distance_unit}"
+
+    def set_currency(self, currency):
+        if currency in self.currency_symbols:
+            self.selected_currency = currency
+            self.currency_symbol = self.currency_symbols[currency]
+            self.settingsChanged.emit()
+
+# Create a global instance
+app_settings = AppSettings()

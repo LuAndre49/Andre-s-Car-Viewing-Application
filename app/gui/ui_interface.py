@@ -22,7 +22,7 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
 from PySide6.QtSql import QSqlDatabase, QSqlTableModel
 from PySide6.QtWidgets import QTableView
 from pathlib import Path
-from app.settings.app_settings import AppSettings
+from app.settings.app_settings import app_settings
 from Custom_Widgets.Widgets import (QCustomSlideMenu, QCustomStackedWidget)
 from Qss.icons import _icons_rc
 
@@ -433,7 +433,7 @@ class Ui_MainWindow(object):
 
         self.currency_selector = QComboBox()
         self.currency_selector.addItems(["PHP", "USD", "CNY"])
-        self.currency_selector.setCurrentText(AppSettings.selected_currency)
+        self.currency_selector.setCurrentText(app_settings.selected_currency)
         self.currency_selector.currentTextChanged.connect(self.change_currency)
         print("[DEBUG] Connected currency dropdown to handler.")
         self.currency_selector.setStyleSheet("font-size: 16px; padding: 4px;")
@@ -615,11 +615,15 @@ class Ui_MainWindow(object):
 
     def change_currency(self, currency_code):
         print(f"[DEBUG] Currency changed to: {currency_code}")
-        AppSettings.selected_currency = currency_code
-        AppSettings.currency_symbol = AppSettings.currency_symbols[currency_code]
-        print(f"[DEBUG] Currency symbol updated to: {AppSettings.currency_symbol}")
+        app_settings.selected_currency = currency_code
+        print(f"[DEBUG] Currency symbol updated to: {app_settings.currency_symbols[currency_code]}")
+        
+        # Emit the signal to update any connected widgets
+        app_settings.settingsChanged.emit()
+        
         if hasattr(self, "cars_page") and self.cars_page:
             print("[DEBUG] Refreshing all car prices...")
             self.cars_page.refresh_all_prices()
         else:
             print("[DEBUG] No cars_page found to refresh.")
+
