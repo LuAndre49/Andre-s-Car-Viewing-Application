@@ -42,14 +42,18 @@ class CarsPage(QWidget):
             self.car_boxes.append(box)
             self.grid_layout.addWidget(box, row, col)
 
-    def filter_cars(self, query):
+    def search_cars(self, query, condition_filter):
         terms = query.lower().split()
         filtered = []
 
         for car in self.car_data_all:
             title = car['title'].lower()
-            if all(term in title for term in terms):
+            car_condition = car.get('condition', '').lower()
+            
+            # Check if search terms match and condition matches (if not 'both')
+            if all(term in title for term in terms) and (condition_filter.lower() == 'both' or condition_filter.lower() == car_condition):
                 filtered.append(car)
+
         self.display_cars(filtered)
 
     def refresh_all_prices(self):

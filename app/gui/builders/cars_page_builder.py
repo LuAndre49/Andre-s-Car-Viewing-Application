@@ -1,8 +1,7 @@
-# app/gui/builders/cars_page_builder.py
-
 from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout, QLineEdit, QPushButton, QWidget
 from app.gui.pages.cars_page import CarsPage
 from app.gui.pages.car_detailed_page import CarDetailsPage
+from app.gui.components.filter_bar import FilterBar 
 
 def show_car_details(car_data, ui):
     """
@@ -44,12 +43,39 @@ def setup_cars_page(ui, car_data):
     
     # Initialize the CarsPage widget
     image_cache = {}
-    #cars = CarsPage(car_data, lambda car: show_car_details(car, ui), image_cache)
-    #cars_page_layout.addWidget(cars)
+    
     cars = CarsPage(car_data, lambda c: show_car_details(c, ui), image_cache)
+    
+    # Create and add the filter bar (add it before adding cars widget)
+    filter_bar = FilterBar(ui.carsPage, lambda condition: apply_filters(cars, car_data, condition))
+    cars_page_layout.addWidget(filter_bar)
+    
+    # Add cars widget after filter bar
     cars_page_layout.addWidget(cars)
     
     # Connect the search button and search bar to filter cars based on input
-    search_button.clicked.connect(lambda: cars.filter_cars(search_bar.text()))
-    search_bar.returnPressed.connect(lambda: cars.filter_cars(search_bar.text()))
+    def perform_search():
+        condition = 'Both'
+        if filter_bar.radio_new.isChecked():
+            condition = 'New'
+        elif filter_bar.radio_used.isChecked():
+            condition = 'Used'
+        
+        # Make sure to convert condition to lowercase to match car_condition in search_cars
+        cars.search_cars(search_bar.text(), condition.lower())
+        
+    search_button.clicked.connect(perform_search)
+    search_bar.returnPressed.connect(perform_search)
+    
     return cars
+
+def apply_filters(cars_page, car_data, condition):
+    """
+    Apply the selected filters and update the car listings on the page.
+    """
+    filtered_data = car_data
+
+    if condition != 'Both':
+        filtered_data = [car for car in car_data if car.get("condition", "") == condition]
+
+    cars_page.display_cars(filtered_data)

@@ -1,16 +1,19 @@
-# -*- coding: utf-8 -*-
+from PySide6.QtCore import QMetaObject, QSize, Qt
+from PySide6.QtGui import QFont, QIcon, QPixmap
+from PySide6.QtWidgets import (
+    QWidget, QVBoxLayout, QHBoxLayout, QFrame, QPushButton, QLabel,
+    QLineEdit, QComboBox, QSizePolicy, QSpacerItem, QTableWidget,
+    QTableWidgetItem
+)
 
-################################################################################
-## Form generated from reading UI file 'interfacejZkKdl.ui'
-##
-## Created by: Qt User Interface Compiler version 6.9.0
-##
-## WARNING! All changes made in this file will be lost when recompiling UI file!
-################################################################################
+from PySide6.QtSql import QSqlDatabase, QSqlTableModel
+from PySide6.QtWidgets import QTableView
+from app.gui.components.custom_widgets import SlideMenu, AnimatedStackedWidget, ButtonGroup
+#, StyleLoader
 
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
+    QSize, QTime, QUrl, Qt, QEasingCurve)
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
@@ -23,8 +26,6 @@ from PySide6.QtSql import QSqlDatabase, QSqlTableModel
 from PySide6.QtWidgets import QTableView
 from pathlib import Path
 from app.settings.app_settings import app_settings
-from Custom_Widgets.Widgets import (QCustomSlideMenu, QCustomStackedWidget)
-from Qss.icons import _icons_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -37,77 +38,77 @@ class Ui_MainWindow(object):
         MainWindow.setFont(font)
         MainWindow.setCursor(QCursor(Qt.CursorShape.ArrowCursor))
         MainWindow.setStyleSheet(u"* {\n"
-"    border: none;\n"
-"    background: transparent;\n"
-"    padding: 0;\n"
-"    margin: 0;\n"
-"    font-family: \"Segoe UI\", sans-serif;\n"
-"    color: #E2E8F0;\n"
-"}\n"
-"\n"
-"#leftMenu {\n"
-"    background-color: #2B6CB0;\n"
-"}\n"
-"\n"
-"QPushButton {\n"
-"    color: #F7FAFC;\n"
-"    padding: 10px 14px;\n"
-"    border-radius: 8px;\n"
-"    text-align: left;\n"
-"	background-color: #4A5568;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: #3B82C4;\n"
-"}\n"
-"\n"
-"/* Active button style */\n"
-"#homeBtn {\n"
-"    background-color: #1A365D;\n"
-"    border-left: 4px solid #E6F0FA;\n"
-"    font-weight: bold;\n"
-"}\n"
-"\n"
-"/* Main Content Background */\n"
-"#mainBody {\n"
-"    background-color: #1A202C; \n"
-"}\n"
-"\n"
-"/* Header */\n"
-"#header {\n"
-"    background-color: #2D3748;\n"
-"    padding: 10px;\n"
-"}\n"
-"\n"
-"/* Add User Panel */\n"
-"#rightMenu {\n"
-"    background-color: #2B6CB0;\n"
-"    border-radius: 10px;\n"
-"    padding: 10px;\n"
-"}\n"
-"\n"
-"/* Inputs */\n"
-"QLineEdit {\n"
-"    background"
-                        "-color: #FFFFFF;\n"
-"    padding: 6px 10px;\n"
-"    border-radius: 5px;\n"
-"    border: 1px solid #CBD5E0;\n"
-"    color: #2D3748;\n"
-"}\n"
-"\n"
-"/* Add User Button */\n"
-"#addUserBtn {\n"
-"    background-color: #4A5568;\n"
-"    color: white;\n"
-"    border-radius: 8px;\n"
-"    padding: 6px 12px;\n"
-"}\n"
-"\n"
-"#addUserBtn:hover {\n"
-"    background-color: #1A365D;\n"
-"}\n"
-"")
+        "    border: none;\n"
+        "    background: transparent;\n"
+        "    padding: 0;\n"
+        "    margin: 0;\n"
+        "    font-family: \"Segoe UI\", sans-serif;\n"
+        "    color: #E2E8F0;\n"
+        "}\n"
+        "\n"
+        "#leftMenu {\n"
+        "    background-color: #2B6CB0;\n"
+        "}\n"
+        "\n"
+        "QPushButton {\n"
+        "    color: #F7FAFC;\n"
+        "    padding: 10px 14px;\n"
+        "    border-radius: 8px;\n"
+        "    text-align: left;\n"
+        "	background-color: #4A5568;\n"
+        "}\n"
+        "\n"
+        "QPushButton:hover {\n"
+        "    background-color: #3B82C4;\n"
+        "}\n"
+        "\n"
+        "/* Active button style */\n"
+        "#homeBtn {\n"
+        "    background-color: #1A365D;\n"
+        "    border-left: 4px solid #E6F0FA;\n"
+        "    font-weight: bold;\n"
+        "}\n"
+        "\n"
+        "/* Main Content Background */\n"
+        "#mainBody {\n"
+        "    background-color: #1A202C; \n"
+        "}\n"
+        "\n"
+        "/* Header */\n"
+        "#header {\n"
+        "    background-color: #2D3748;\n"
+        "    padding: 10px;\n"
+        "}\n"
+        "\n"
+        "/* Add User Panel */\n"
+        "#rightMenu {\n"
+        "    background-color: #2B6CB0;\n"
+        "    border-radius: 10px;\n"
+        "    padding: 10px;\n"
+        "}\n"
+        "\n"
+        "/* Inputs */\n"
+        "QLineEdit {\n"
+        "    background"
+                                "-color: #FFFFFF;\n"
+        "    padding: 6px 10px;\n"
+        "    border-radius: 5px;\n"
+        "    border: 1px solid #CBD5E0;\n"
+        "    color: #2D3748;\n"
+        "}\n"
+        "\n"
+        "/* Add User Button */\n"
+        "#addUserBtn {\n"
+        "    background-color: #4A5568;\n"
+        "    color: white;\n"
+        "    border-radius: 8px;\n"
+        "    padding: 6px 12px;\n"
+        "}\n"
+        "\n"
+        "#addUserBtn:hover {\n"
+        "    background-color: #1A365D;\n"
+        "}\n"
+        "")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
@@ -130,7 +131,7 @@ class Ui_MainWindow(object):
         self.menuBtn.setObjectName(u"menuBtn")
         self.menuBtn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         icon = QIcon()
-        icon.addFile(u":/feather/icons/feather/align-justify.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        icon.addFile(str(Path(__file__).parent / "icons/feather/align-justify.png"), QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.menuBtn.setIcon(icon)
         self.menuBtn.setIconSize(QSize(24, 24))
 
@@ -146,7 +147,6 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_4.addWidget(self.label)
 
-
         self.horizontalLayout.addWidget(self.frame_2, 0, Qt.AlignmentFlag.AlignLeft)
 
         self.frame = QFrame(self.header)
@@ -159,7 +159,7 @@ class Ui_MainWindow(object):
         self.pushButton_4.setObjectName(u"pushButton_4")
         self.pushButton_4.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         icon1 = QIcon()
-        icon1.addFile(u":/feather/icons/feather/search.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        icon1.addFile(str(Path(__file__).parent / "icons/feather/search.png"), QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.pushButton_4.setIcon(icon1)
         self.pushButton_4.setIconSize(QSize(32, 32))
 
@@ -169,7 +169,7 @@ class Ui_MainWindow(object):
         self.pushButton_3.setObjectName(u"pushButton_3")
         self.pushButton_3.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         icon2 = QIcon()
-        icon2.addFile(u":/feather/icons/feather/bell.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        icon2.addFile(str(Path(__file__).parent / "icons/feather/bell.png"), QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.pushButton_3.setIcon(icon2)
         self.pushButton_3.setIconSize(QSize(32, 32))
 
@@ -179,15 +179,13 @@ class Ui_MainWindow(object):
         self.pushButton_2.setObjectName(u"pushButton_2")
         self.pushButton_2.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         icon3 = QIcon()
-        icon3.addFile(u":/feather/icons/feather/user.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        icon3.addFile(str(Path(__file__).parent /"icons/feather/user.png"), QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.pushButton_2.setIcon(icon3)
         self.pushButton_2.setIconSize(QSize(38, 38))
 
         self.horizontalLayout_3.addWidget(self.pushButton_2)
 
-
         self.horizontalLayout.addWidget(self.frame, 0, Qt.AlignmentFlag.AlignRight)
-
 
         self.verticalLayout.addWidget(self.header)
 
@@ -203,21 +201,23 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout_2.setContentsMargins(0, 9, 0, 0)
-        self.leftMenu = QCustomSlideMenu(self.mainBody)
+        
+        self.leftMenu = SlideMenu(self.mainBody)
         self.leftMenu.setObjectName(u"leftMenu")
         self.leftMenu.setMinimumSize(QSize(200, 0))
         self.leftMenu.setMaximumSize(QSize(0, 16777215))
+        
         self.verticalLayout_3 = QVBoxLayout(self.leftMenu)
         self.verticalLayout_3.setSpacing(0)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.verticalLayout_3.setContentsMargins(0, 0, 0, 30)
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.widget = QWidget(self.leftMenu)
         self.widget.setObjectName(u"widget")
         self.widget.setMinimumSize(QSize(200, 591))
         self.verticalLayout_4 = QVBoxLayout(self.widget)
         self.verticalLayout_4.setSpacing(0)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.verticalLayout_4.setContentsMargins(10, 0, 0, 0)
+        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.frame_3 = QFrame(self.widget)
         self.frame_3.setObjectName(u"frame_3")
         self.frame_3.setFrameShape(QFrame.Shape.StyledPanel)
@@ -230,7 +230,7 @@ class Ui_MainWindow(object):
         self.homeBtn.setObjectName(u"homeBtn")
         self.homeBtn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         icon4 = QIcon()
-        icon4.addFile(u":/feather/icons/feather/home.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        icon4.addFile(str(Path(__file__).parent /"icons/feather/home.png"), QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.homeBtn.setIcon(icon4)
 
         self.verticalLayout_5.addWidget(self.homeBtn)
@@ -239,7 +239,7 @@ class Ui_MainWindow(object):
         self.carsBtn.setObjectName(u"carsBtn")
         self.carsBtn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         icon5 = QIcon()
-        icon5.addFile(u":/font_awesome_solid/icons/font_awesome/solid/car.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        icon5.addFile(str(Path(__file__).parent /"icons/font_awesome/solid/car.png"), QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.carsBtn.setIcon(icon5)
 
         self.verticalLayout_5.addWidget(self.carsBtn)
@@ -248,7 +248,7 @@ class Ui_MainWindow(object):
         self.compareBtn.setObjectName(u"compareBtn")
         self.compareBtn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         icon6 = QIcon()
-        icon6.addFile(u":/font_awesome_solid/icons/font_awesome/solid/scale-unbalanced.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        icon6.addFile(str(Path(__file__).parent /"icons/font_awesome/solid/scale-unbalanced.png"), QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.compareBtn.setIcon(icon6)
 
         self.verticalLayout_5.addWidget(self.compareBtn)
@@ -257,7 +257,7 @@ class Ui_MainWindow(object):
         self.newsBtn.setObjectName(u"newsBtn")
         self.newsBtn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         icon7 = QIcon()
-        icon7.addFile(u":/font_awesome_regular/icons/font_awesome/regular/newspaper.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        icon7.addFile(str(Path(__file__).parent /"icons/font_awesome/regular/newspaper.png"), QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.newsBtn.setIcon(icon7)
 
         self.verticalLayout_5.addWidget(self.newsBtn)
@@ -268,7 +268,6 @@ class Ui_MainWindow(object):
         self.accountBtn.setIcon(icon3)
 
         self.verticalLayout_5.addWidget(self.accountBtn)
-
 
         self.verticalLayout_4.addWidget(self.frame_3)
 
@@ -288,7 +287,7 @@ class Ui_MainWindow(object):
         self.settingsBtn.setObjectName(u"settingsBtn")
         self.settingsBtn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         icon8 = QIcon()
-        icon8.addFile(u":/feather/icons/feather/settings.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        icon8.addFile(str(Path(__file__).parent / "icons/feather/settings.png"), QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.settingsBtn.setIcon(icon8)
 
         self.verticalLayout_6.addWidget(self.settingsBtn)
@@ -297,7 +296,7 @@ class Ui_MainWindow(object):
         self.helpBtn.setObjectName(u"helpBtn")
         self.helpBtn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         icon9 = QIcon()
-        icon9.addFile(u":/feather/icons/feather/help-circle.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        icon9.addFile(str(Path(__file__).parent /"icons/feather/help-circle.png"), QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.helpBtn.setIcon(icon9)
 
         self.verticalLayout_6.addWidget(self.helpBtn)
@@ -306,17 +305,14 @@ class Ui_MainWindow(object):
         self.aboutBtn.setObjectName(u"aboutBtn")
         self.aboutBtn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         icon10 = QIcon()
-        icon10.addFile(u":/feather/icons/feather/info.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        icon10.addFile(str(Path(__file__).parent /"icons/feather/info.png"), QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.aboutBtn.setIcon(icon10)
 
         self.verticalLayout_6.addWidget(self.aboutBtn)
 
-
         self.verticalLayout_4.addWidget(self.frame_4)
 
-
         self.verticalLayout_3.addWidget(self.widget)
-
 
         self.horizontalLayout_2.addWidget(self.leftMenu)
 
@@ -324,8 +320,10 @@ class Ui_MainWindow(object):
         self.mainBodyContent.setObjectName(u"mainBodyContent")
         self.verticalLayout_2 = QVBoxLayout(self.mainBodyContent)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.mainPages = QCustomStackedWidget(self.mainBodyContent)
+        
+        self.mainPages = AnimatedStackedWidget(self.mainBodyContent)
         self.mainPages.setObjectName(u"mainPages")
+        
         self.homePage = QWidget()
         self.homePage.setObjectName(u"homePage")
         self.label_8 = QLabel(self.homePage)
@@ -336,9 +334,11 @@ class Ui_MainWindow(object):
         font2.setPointSize(50)
         self.label_8.setFont(font2)
         self.mainPages.addWidget(self.homePage)
+        
         self.carsPage = QWidget()
         self.carsPage.setObjectName(u"carsPage")
         self.mainPages.addWidget(self.carsPage)
+        
         self.comparePage = QWidget()
         self.comparePage.setObjectName(u"comparePage")
         self.label_6 = QLabel(self.comparePage)
@@ -346,6 +346,7 @@ class Ui_MainWindow(object):
         self.label_6.setGeometry(QRect(290, 270, 291, 151))
         self.label_6.setFont(font2)
         self.mainPages.addWidget(self.comparePage)
+        
         self.newsPage = QWidget()
         self.newsPage.setObjectName(u"newsPage")
         self.label_9 = QLabel(self.newsPage)
@@ -353,6 +354,7 @@ class Ui_MainWindow(object):
         self.label_9.setGeometry(QRect(380, 250, 291, 151))
         self.label_9.setFont(font2)
         self.mainPages.addWidget(self.newsPage)
+        
         self.accountPage = QWidget()
         self.accountPage.setObjectName(u"accountPage")
         self.verticalLayout_10 = QVBoxLayout(self.accountPage)
@@ -381,46 +383,18 @@ class Ui_MainWindow(object):
         self.showUserFormBtn.setFont(font)
         self.showUserFormBtn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         icon11 = QIcon()
-        icon11.addFile(u":/material_design/icons/material_design/add_circle.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        icon11.addFile(str(Path(__file__).parent /"icons/material_design/add_circle.png"), QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.showUserFormBtn.setIcon(icon11)
         self.showUserFormBtn.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_5.addWidget(self.showUserFormBtn, 0, Qt.AlignmentFlag.AlignRight)
 
-
         self.verticalLayout_11.addWidget(self.frame_6)
-        """
-        self.tableWidget = QTableWidget(self.widget_3)
-        if (self.tableWidget.columnCount() < 4):
-            self.tableWidget.setColumnCount(4)
-        __qtablewidgetitem = QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(0, __qtablewidgetitem)
-        __qtablewidgetitem1 = QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(1, __qtablewidgetitem1)
-        __qtablewidgetitem2 = QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(2, __qtablewidgetitem2)
-        __qtablewidgetitem3 = QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(3, __qtablewidgetitem3)
-        self.tableWidget.setObjectName(u"tableWidget")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.MinimumExpanding)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.tableWidget.sizePolicy().hasHeightForWidth())
-        self.tableWidget.setSizePolicy(sizePolicy1)
-        self.tableWidget.setMinimumSize(QSize(500, 700))
-        self.tableWidget.horizontalHeader().setMinimumSectionSize(50)
-        self.tableWidget.horizontalHeader().setDefaultSectionSize(160)
-        self.tableWidget.horizontalHeader().setProperty(u"showSortIndicator", False)
-        self.tableWidget.horizontalHeader().setStretchLastSection(False)
-        self.tableWidget.verticalHeader().setProperty(u"showSortIndicator", False)
-        self.tableWidget.verticalHeader().setStretchLastSection(False)
-
-        self.verticalLayout_11.addWidget(self.tableWidget)
-        """
 
         self.verticalLayout_10.addWidget(self.widget_3)
 
         self.mainPages.addWidget(self.accountPage)
+        
         self.settingsPage = QWidget()
         self.settingsPage.setObjectName(u"settingsPage")
         settings_layout = QVBoxLayout(self.settingsPage)
@@ -433,29 +407,25 @@ class Ui_MainWindow(object):
 
         self.currency_selector = QComboBox()
         self.currency_selector.addItems(["PHP", "USD", "CNY"])
-        self.currency_selector.setCurrentText(app_settings.selected_currency)
-        self.currency_selector.currentTextChanged.connect(self.change_currency)
-        print("[DEBUG] Connected currency dropdown to handler.")
-        self.currency_selector.setStyleSheet("font-size: 16px; padding: 4px;")
         self.currency_selector.setStyleSheet("""
-                                                QComboBox {
-                                                    background-color: #2c2c2c;
-                                                    color: white;
-                                                    border: 1px solid #555;
-                                                    padding: 5px 10px;
-                                                    font-size: 16px;
-                                                }
-                                                QComboBox::drop-down {
-                                                    border: none;
-                                                }
-                                            """)
+            QComboBox {
+                background-color: #2c2c2c;
+                color: white;
+                border: 1px solid #555;
+                padding: 5px 10px;
+                font-size: 16px;
+            }
+            QComboBox::drop-down {
+                border: none;
+            }
+        """)
 
         currency_layout.addWidget(currency_label)
         currency_layout.addWidget(self.currency_selector)
         settings_layout.addLayout(currency_layout)
 
-
         self.mainPages.addWidget(self.settingsPage)
+        
         self.helpPage = QWidget()
         self.helpPage.setObjectName(u"helpPage")
         self.label_7 = QLabel(self.helpPage)
@@ -463,6 +433,7 @@ class Ui_MainWindow(object):
         self.label_7.setGeometry(QRect(340, 270, 291, 151))
         self.label_7.setFont(font2)
         self.mainPages.addWidget(self.helpPage)
+        
         self.aboutPage = QWidget()
         self.aboutPage.setObjectName(u"aboutPage")
         self.label_3 = QLabel(self.aboutPage)
@@ -473,12 +444,12 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addWidget(self.mainPages)
 
-
         self.horizontalLayout_2.addWidget(self.mainBodyContent)
 
-        self.rightMenu = QCustomSlideMenu(self.mainBody)
+        self.rightMenu = SlideMenu(self.mainBody)
         self.rightMenu.setObjectName(u"rightMenu")
         self.rightMenu.setMinimumSize(QSize(200, 0))
+        
         self.verticalLayout_7 = QVBoxLayout(self.rightMenu)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
         self.widget_2 = QWidget(self.rightMenu)
@@ -490,7 +461,7 @@ class Ui_MainWindow(object):
         self.label_2.setObjectName(u"label_2")
         self.label_2.setMinimumSize(QSize(70, 70))
         self.label_2.setMaximumSize(QSize(70, 70))
-        self.label_2.setPixmap(QPixmap(u":/feather/icons/feather/edit-2.png"))
+        self.label_2.setPixmap(QPixmap(str(Path(__file__).parent /"icons/feather/edit-2.png")))
         self.label_2.setScaledContents(True)
 
         self.verticalLayout_8.addWidget(self.label_2, 0, Qt.AlignmentFlag.AlignHCenter)
@@ -516,7 +487,6 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_9.addWidget(self.phoneNumber)
 
-
         self.verticalLayout_8.addWidget(self.frame_5)
 
         self.addUserBtn = QPushButton(self.widget_2)
@@ -524,18 +494,15 @@ class Ui_MainWindow(object):
         self.addUserBtn.setFont(font)
         self.addUserBtn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         icon12 = QIcon()
-        icon12.addFile(u":/material_design/icons/material_design/add.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        icon12.addFile(str(Path(__file__).parent /"icons/material_design/add.png"), QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.addUserBtn.setIcon(icon12)
         self.addUserBtn.setIconSize(QSize(24, 24))
 
         self.verticalLayout_8.addWidget(self.addUserBtn, 0, Qt.AlignmentFlag.AlignHCenter)
 
-
         self.verticalLayout_7.addWidget(self.widget_2, 0, Qt.AlignmentFlag.AlignHCenter|Qt.AlignmentFlag.AlignTop)
 
-
         self.horizontalLayout_2.addWidget(self.rightMenu)
-
 
         self.verticalLayout.addWidget(self.mainBody)
 
@@ -544,52 +511,128 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         QMetaObject.connectSlotsByName(MainWindow)
-    # setupUi
+        
+        # Setup the custom widgets after UI initialization
+        self._setup_custom_widgets()
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.menuBtn.setText("")
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Andre's Car Viewing Application", None))
-        self.pushButton_4.setText("")
-        self.pushButton_3.setText("")
-        self.pushButton_2.setText("")
-        self.homeBtn.setText(QCoreApplication.translate("MainWindow", u"Home", None))
-        self.carsBtn.setText(QCoreApplication.translate("MainWindow", u"Cars", None))
-        self.compareBtn.setText(QCoreApplication.translate("MainWindow", u"Compare", None))
-        self.newsBtn.setText(QCoreApplication.translate("MainWindow", u"News", None))
-        self.accountBtn.setText(QCoreApplication.translate("MainWindow", u"Accounts", None))
-        self.settingsBtn.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
-        self.helpBtn.setText(QCoreApplication.translate("MainWindow", u"Help", None))
-        self.aboutBtn.setText(QCoreApplication.translate("MainWindow", u"About", None))
-        self.label_8.setText(QCoreApplication.translate("MainWindow", u"Home", None))
-        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Compare", None))
-        self.label_9.setText(QCoreApplication.translate("MainWindow", u"News", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Accounts", None))
-        self.showUserFormBtn.setText(QCoreApplication.translate("MainWindow", u"Add User", None))
-        """
-        ___qtablewidgetitem = self.tableWidget.horizontalHeaderItem(0)
-        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"ID", None));
-        ___qtablewidgetitem1 = self.tableWidget.horizontalHeaderItem(1)
-        ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"Email", None));
-        ___qtablewidgetitem2 = self.tableWidget.horizontalHeaderItem(2)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"Username", None));
-        ___qtablewidgetitem3 = self.tableWidget.horizontalHeaderItem(3)
-        ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"Phone Number", None));
-        """
-        #self.label_10.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
-        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Help", None))
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"About", None))
-        self.label_2.setText("")
-        self.username.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Username", None))
-        self.email.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Email", None))
-        self.phoneNumber.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Phone Number", None))
-        self.addUserBtn.setText(QCoreApplication.translate("MainWindow", u"Add User", None))
+        MainWindow.setWindowTitle("Car Viewing Application")
+        self.label.setText("Car Viewer")
+        self.homeBtn.setText("Home")
+        self.carsBtn.setText("Cars")
+        self.compareBtn.setText("Compare")
+        self.newsBtn.setText("News")
+        self.accountBtn.setText("Account")
+        self.settingsBtn.setText("Settings")
+        self.helpBtn.setText("Help")
+        self.aboutBtn.setText("About")
+        self.label_8.setText("HOME")
+        self.label_6.setText("COMPARE")
+        self.label_9.setText("NEWS")
+        self.label_4.setText("Users")
+        self.showUserFormBtn.setText("Add User")
+        self.label_7.setText("HELP")
+        self.label_3.setText("ABOUT")
+        self.username.setPlaceholderText("Username")
+        self.email.setPlaceholderText("Email")
+        self.phoneNumber.setPlaceholderText("Phone Number")
+        self.addUserBtn.setText("Add User")
+    
 
+    def _setup_custom_widgets(self):
+        """Set up the custom widgets with their configurations."""
+        # Setup slide menus
+        self.leftMenu.setup(
+            default_width=0,  
+            expanded_width=200,  
+            animation_duration=500,
+            easing_curve=QEasingCurve.Type.OutQuad,
+            background_color='#2B6CB0'  
+        )
+        
+        # Force the background color using palette
+        palette = self.leftMenu.palette()
+        palette.setColor(self.leftMenu.backgroundRole(), QColor('#2B6CB0'))
+        self.leftMenu.setPalette(palette)
+        self.leftMenu.setAutoFillBackground(True)
+        
+        # Setup right menu
+        self.rightMenu.setup(
+            default_width=0,  
+            expanded_width=200,  
+            animation_duration=500,
+            easing_curve=QEasingCurve.Type.OutQuad,
+            background_color='#2B6CB0'
+        )
+        
+        # Force the right menu background color as well
+        palette = self.rightMenu.palette()
+        palette.setColor(self.rightMenu.backgroundRole(), QColor('#2B6CB0'))
+        self.rightMenu.setPalette(palette)
+        self.rightMenu.setAutoFillBackground(True)
+        
+        # Setup stacked widget animations
+        self.mainPages.setup(
+            animation_type="slide",
+            duration=500,
+            easing=QEasingCurve.Type.OutBack,
+            direction=Qt.Orientation.Horizontal
+        )
+        
+        # Setup the navigation buttons
+        button_page_map = {
+            self.homeBtn: 0,  # Home page index
+            self.carsBtn: 1,  # Cars page index
+            self.compareBtn: 2,  # Compare page index
+            self.newsBtn: 3,  # News page index
+            self.accountBtn: 4,  # Account page index
+            self.settingsBtn: 5,  # Settings page index
+            self.helpBtn: 6,  # Help page index
+            self.aboutBtn: 7,  # About page index
+        }
+        self.mainPages.set_navigation(button_page_map)
+        
+        # Set up the toggle buttons for the sliding menus
+        self.menuBtn.clicked.connect(self.leftMenu.toggle)
+        self.showUserFormBtn.clicked.connect(self.rightMenu.toggle)
+        
+        # Set up button icons for left menu toggle
+        menu_collapsed_icon = QIcon(str(Path(__file__).parent /"icons/feather/align-justify.png"))
+        menu_expanded_icon = QIcon(str(Path(__file__).parent /"icons/feather/chevron-left.png"))  
+        self.leftMenu.set_toggle_button(self.menuBtn, menu_collapsed_icon, menu_expanded_icon)
+        
+        # Set up button icons for right menu toggle
+        user_form_collapsed_icon = QIcon(str(Path(__file__).parent /"icons/material_design/add_circle.png"))
+        user_form_expanded_icon = QIcon(str(Path(__file__).parent /"icons/feather/window_close.png"))  
+        self.rightMenu.set_toggle_button(self.showUserFormBtn, user_form_collapsed_icon, user_form_expanded_icon)
+        
+        # Create a ButtonGroup for navigation buttons
+        nav_buttons = [self.homeBtn, self.carsBtn, self.compareBtn, self.newsBtn, 
+                    self.accountBtn, self.settingsBtn, self.helpBtn, self.aboutBtn]
+        
+        active_style = """
+        background-color: #1A365D;
+        border-left: 4px solid #E6F0FA;
+        font-weight: bold;
+        """
+        
+        inactive_style = """
+        background-color: #4A5568;
+        border-left: none;
+        font-weight: normal;
+        """
+        
+        self.nav_button_group = ButtonGroup()
+        self.nav_button_group.setup(nav_buttons, active_style, inactive_style)
+        
+        self.nav_button_group.set_active(self.homeBtn)
+        
+    
     def setup_database_table_view(self):
         db_path = Path(__file__).resolve().parents[2] / "data" / "processed" / "cars.db"
         db = QSqlDatabase.addDatabase("QSQLITE")
 
-        if db.databaseName() != str(db_path):  # Prevent resetting if already set
+        if db.databaseName() != str(db_path):  
             db.setDatabaseName(str(db_path))
 
         if not db.open():
@@ -603,6 +646,35 @@ class Ui_MainWindow(object):
         
         table_view = QTableView()
         table_view.setModel(model)
+
+        table_view.setStyleSheet("""
+            QTableView {
+                background-color: #1A202C;
+                alternate-background-color: #2D3748;
+                color: #E2E8F0;
+                gridline-color: #4A5568;
+                border: none;
+            }
+            
+            QHeaderView::section {
+                background-color: #2B6CB0;
+                color: #FFFFFF;
+                padding: 5px;
+                border: none;
+                font-weight: bold;
+            }
+            
+            QTableView::item {
+                border-bottom: 1px solid #4A5568;
+                padding: 5px;
+            }
+            
+            QTableView::item:selected {
+                background-color: #3B82C4;
+            }
+        """)
+
+
         table_view.setSortingEnabled(True)
         table_view.resizeColumnsToContents()
         table_view.setSelectionBehavior(QTableView.SelectRows)
@@ -618,7 +690,6 @@ class Ui_MainWindow(object):
         app_settings.selected_currency = currency_code
         print(f"[DEBUG] Currency symbol updated to: {app_settings.currency_symbols[currency_code]}")
         
-        # Emit the signal to update any connected widgets
         app_settings.settingsChanged.emit()
         
         if hasattr(self, "cars_page") and self.cars_page:
@@ -626,4 +697,3 @@ class Ui_MainWindow(object):
             self.cars_page.refresh_all_prices()
         else:
             print("[DEBUG] No cars_page found to refresh.")
-
