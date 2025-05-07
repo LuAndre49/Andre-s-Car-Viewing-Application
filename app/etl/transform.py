@@ -23,7 +23,7 @@ def download_image(url, save_dir="data/images"):
         return None
 
 #def transform(raw_listings, car_brands):
-def transform():
+def transform_cars():
     # TEMPORARY for transforming from json file
     with open('data/raw/listings.json', 'r') as f:
         raw_listings = json.load(f)
@@ -156,3 +156,34 @@ def fetch_new_car_details(url):
     except Exception as e:
         print(f"[ERROR] Failed to fetch details from {url}: {e}")
         return None, None, None, None
+
+def transform_news():
+    with open('data/raw/news.json', 'r') as f:
+        raw_news = json.load(f)
+
+    transformed = []
+    for news in raw_news:
+        category = news.get('category', '')
+
+        if category == 'News':
+            title = news.get('title', '')
+            title = title.strip()
+            link = news.get('link', '')
+            image_url = news.get('image_url', '')
+            local_image_path = download_image(image_url) if image_url else ""
+            author = news.get('author', '')
+            date = news.get('date', '')
+            intro = news.get('intro', '')
+            intro = intro.replace('\n', ' ').strip()
+
+            transformed.append({
+                'title': title,
+                'link': link,
+                'image_url': image_url,
+                'local_image_path': local_image_path,
+                'author': author,
+                'date': date,
+                'intro': intro
+            })
+
+    return transformed

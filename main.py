@@ -9,8 +9,9 @@ from PySide6.QtCore import QEasingCurve
 from PySide6.QtWidgets import QApplication, QMainWindow, QStackedWidget
 from PySide6.QtGui import QIcon
 from app.etl.etl import run_etl
-from app.gui.utils.db_reader import fetch_car_data
+from app.gui.utils.db_reader import fetch_car_data, fetch_news_data
 from app.gui.builders.cars_page_builder import setup_cars_page
+from app.gui.builders.news_page_builder import setup_news_page
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -35,6 +36,10 @@ class MainWindow(QMainWindow):
         # Connect currency selector signal
         self.ui.currency_selector.currentTextChanged.connect(self.ui.change_currency)
         
+        news_data = fetch_news_data()
+        news_page_widget = setup_news_page(self.ui, news_data)
+        self.ui.set_news_page(news_page_widget)
+
         # Show the window
         self.show()
     

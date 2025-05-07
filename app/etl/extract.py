@@ -5,12 +5,12 @@ from selenium.webdriver.firefox.options import Options
 import json
 from pathlib import Path
 
-URLS = {
+car_URLS = {
     "New":  "https://www.autodeal.com.ph/cars/search?sort-by=alphabetical&page={}",
     "Used": "https://www.autodeal.com.ph/used-cars/search/certified-pre-owned+repossessed+used-car-status/page-{}?sort-by=relevance"
 }
 
-def extract(max_pages=1):
+def extract_cars(max_pages=1):
     options = Options()
     options.add_argument("--headless")
     driver = webdriver.Firefox(options=options)
@@ -20,7 +20,7 @@ def extract(max_pages=1):
     old_brand_loaded = False  # flag to prevent re-clicking brand toggle
     new_brand_loaded = False  # flag to prevent re-clicking brand toggle
     try:
-        for condition, base_url in URLS.items():
+        for condition, base_url in car_URLS.items():
             for page in range(1, max_pages + 1):
                 url = base_url.format(page)
                 print(f"[INFO] Loading {condition} page {page}: {url}")
@@ -134,3 +134,61 @@ def extract(max_pages=1):
         print(f"[ERROR] Failed to write brands to file: {e}")
 
     return listings, brands
+
+def extract_news():
+    options = Options()
+    options.add_argument("--headless")
+    driver = webdriver.Firefox(options=options)
+
+    news = []
+    try:
+        url = "https://www.autodeal.com.ph/articles/latest-stories"
+        print(f"[INFO] Loading news page: {url}")
+        driver.get(url)
+        time.sleep(3)
+
+        cards = driver.find_elements(By.CSS_SELECTOR, "li.padtop20.padbottom20.row.gutters.card.directory-listing")
+        if not cards:
+            print(f"[WARN] No news found on {url}")
+            return news
+
+        for card in cards:
+            try:
+                image_container = card.find_element(By.CSS_SELECTOR, "div.col.span_3")
+                image = image_container.find_element(By.TAG_NAME, "img")
+                image_url = image.get_attribute("data-src") or image.get_attribute("src")
+                title_container = card.find_element(By.CSS_SELECTOR, "h3.h5.nomargin.bold.marginright50")
+                title_a = title_container.find_element(By.TAG_NAME, "a")
+                title = title_a.text.strip()
+                link = title_a.get_attribute("href")
+                category = title_a.get_attribute("data-gacategory")
+
+                author_container = card.find_element(By.CSS_SELECTOR, "div.byline")
+                author_a = author_container.find_element(By.TAG_NAME, "a")
+                author = author_a.find_elements(By.TAG_NAME, "span")[0].text.strip()
+                date = author_a.find_elements(By.TAG_NAME, "span")[1].text.strip()
+
+                intro = card.find_element(By.CSS_SELECTOR, "p").text.strip()
+
+                news.append({
+                    "title": title,
+                    "link": link,
+                    "image_url": image_url,
+                    "date": date,
+                    "author": author,
+                    "category": category,
+                    "intro": intro
+                })
+            except Exception as e:
+                print(f"[WARN] Skipping a news item due to error: {e}")
+
+    finally:
+        driver.quit()
+
+    try:
+        with open(str(Path(__file__).parent.parent.parent / "data/raw/news.json"), "w") as f:
+            json.dump(news, f, indent=4)
+    except Exception as e:
+        print(f"[ERROR] Failed to write news to file: {e}")
+
+    return news

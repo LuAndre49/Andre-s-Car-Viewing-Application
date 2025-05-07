@@ -685,6 +685,9 @@ class Ui_MainWindow(object):
     def set_cars_page(self, cars_page):
         self.cars_page = cars_page
 
+    def set_news_page(self, news_page):
+        self.news_page = news_page
+
     def change_currency(self, currency_code):
         print(f"[DEBUG] Currency changed to: {currency_code}")
         app_settings.selected_currency = currency_code

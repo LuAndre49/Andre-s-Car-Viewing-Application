@@ -1,12 +1,12 @@
 import sqlite3
 from pathlib import Path
 
-def create_connection():
+def create_car_connection():
     db_path = Path(__file__).resolve().parents[2] / "data" / "processed" / "cars.db"
     db_path.parent.mkdir(parents=True, exist_ok=True)
     return sqlite3.connect(db_path)
 
-def create_table(conn):
+def create_car_table(conn):
     cursor = conn.cursor()
     cursor.execute('''
          CREATE TABLE IF NOT EXISTS cars (
@@ -31,7 +31,7 @@ def create_table(conn):
     
 
 
-def insert_data(conn, cars):
+def insert_car_data(conn, cars):
     cursor = conn.cursor()
 
     for car in cars:
@@ -50,11 +50,59 @@ def insert_data(conn, cars):
         ))
     conn.commit()
 
-def load(transformed_data):
-    conn = create_connection()
-    create_table(conn)
-    insert_data(conn, transformed_data)
+def load_cars(transformed_data):
+    conn = create_car_connection()
+    create_car_table(conn)
+    insert_car_data(conn, transformed_data)
     conn.close()
     
     print("[INFO] Data loaded into SQLite database.")
     print(f"[INFO] DB successfully created at {Path(__file__).resolve().parents[2] / 'data' / 'processed' / 'cars.db'}")
+
+def create_news_connection():
+    db_path = Path(__file__).resolve().parents[2] / "data" / "processed" / "news.db"
+    db_path.parent.mkdir(parents=True, exist_ok=True)
+    return sqlite3.connect(db_path)
+
+def create_news_table(conn):
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS news (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT,
+            link TEXT,
+            image_url TEXT,
+            local_image_path TEXT,
+            author TEXT,
+            date TEXT,
+            intro TEXT,
+            UNIQUE(title, link)
+        );
+    ''')
+    conn.commit()
+
+def insert_news_data(conn, news_data):
+    cursor = conn.cursor()
+
+    for article in news_data:
+        cursor.execute("""
+            INSERT OR IGNORE INTO news (
+                title, link, image_url, local_image_path,
+                author, date, intro
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (
+            article["title"], article["link"],
+            article["image_url"], article["local_image_path"],
+            article["author"], article["date"], article["intro"]
+        ))
+
+    conn.commit()
+
+def load_news(transformed_news):
+    conn = create_news_connection()
+    create_news_table(conn)
+    insert_news_data(conn, transformed_news)
+    conn.close()
+
+    print("[INFO] News data loaded into SQLite database.")
+    print(f"[INFO] DB successfully updated at {Path(__file__).resolve().parents[2] / 'data' / 'processed' / 'news.db'}")
