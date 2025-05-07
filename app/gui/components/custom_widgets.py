@@ -18,26 +18,26 @@ class SlideMenu(QWidget):
     
     def __init__(self, parent=None):
         super().__init__(parent)
-        self._expanded = False
-        self._default_width = 0
-        self._expanded_width = 200
-        self._animation_duration = 500
-        self._easing_curve = QEasingCurve.Type.Linear
-        self._toggle_button = None
-        self._toggle_button_icons = None
+        self.expanded = False
+        self.default_width = 0
+        self.expanded_width = 200
+        self.animation_duration = 500
+        self.easing_curve = QEasingCurve.Type.Linear
+        self.toggle_button = None
+        self.toggle_button_icons = None
         self.setAutoFillBackground(True)
         
     def setup(self, default_width=0, expanded_width=200, 
               animation_duration=500, easing_curve=QEasingCurve.Type.Linear,
               background_color = None):
         """Configure the sliding menu."""
-        self._default_width = default_width
-        self._expanded_width = expanded_width
-        self._animation_duration = animation_duration
-        self._easing_curve = easing_curve
+        self.default_width = default_width
+        self.expanded_width = expanded_width
+        self.animation_duration = animation_duration
+        self.easing_curve = easing_curve
         
         # Set initial width
-        self.setFixedWidth(self._default_width)
+        self.setFixedWidth(self.default_width)
         if background_color:
             self.setStyleSheet(f"background-color: {background_color};")
 
@@ -74,63 +74,63 @@ class SlideMenu(QWidget):
         
     def set_toggle_button(self, button, collapsed_icon=None, expanded_icon=None):
         """Set the button that toggles this menu."""
-        self._toggle_button = button
-        self._toggle_button_icons = (collapsed_icon, expanded_icon)
+        self.toggle_button = button
+        self.toggle_button_icons = (collapsed_icon, expanded_icon)
         
         # Connect the button's clicked signal to toggle function
         if button:
             button.clicked.connect(self.toggle)
             
             # Set the initial icon if icons are provided
-            if collapsed_icon and not self._expanded:
+            if collapsed_icon and not self.expanded:
                 button.setIcon(collapsed_icon)
                 
     def toggle(self):
         """Toggle between expanded and collapsed states."""
-        if self._expanded:
+        if self.expanded:
             self.collapse()
         else:
             self.expand()
     
     def expand(self):
         """Expand the menu."""
-        self._animate_width(self._expanded_width)
-        self._expanded = True
+        self.animate_width(self.expanded_width)
+        self.expanded = True
         self.stateChanged.emit(True)
         
         # Change icon if available
-        if self._toggle_button and self._toggle_button_icons and self._toggle_button_icons[1]:
-            self._toggle_button.setIcon(self._toggle_button_icons[1])
+        if self.toggle_button and self.toggle_button_icons and self.toggle_button_icons[1]:
+            self.toggle_button.setIcon(self.toggle_button_icons[1])
     
     def collapse(self):
         """Collapse the menu."""
-        self._animate_width(self._default_width)
-        self._expanded = False
+        self.animate_width(self.default_width)
+        self.expanded = False
         self.stateChanged.emit(False)
         
         # Change icon if available
-        if self._toggle_button and self._toggle_button_icons and self._toggle_button_icons[0]:
-            self._toggle_button.setIcon(self._toggle_button_icons[0])
+        if self.toggle_button and self.toggle_button_icons and self.toggle_button_icons[0]:
+            self.toggle_button.setIcon(self.toggle_button_icons[0])
     
-    def _animate_width(self, target_width):
+    def animate_width(self, target_width):
         """Animate the width change of the menu."""
         self.animation = QPropertyAnimation(self, b"minimumWidth")
         self.animation.setStartValue(self.width())
         self.animation.setEndValue(target_width)
-        self.animation.setDuration(self._animation_duration)
-        self.animation.setEasingCurve(self._easing_curve)
+        self.animation.setDuration(self.animation_duration)
+        self.animation.setEasingCurve(self.easing_curve)
         self.animation.start()
         
         self.animation2 = QPropertyAnimation(self, b"maximumWidth")
         self.animation2.setStartValue(self.width())
         self.animation2.setEndValue(target_width)
-        self.animation2.setDuration(self._animation_duration)
-        self.animation2.setEasingCurve(self._easing_curve)
+        self.animation2.setDuration(self.animation_duration)
+        self.animation2.setEasingCurve(self.easing_curve)
         self.animation2.start()
         
     def is_expanded(self):
         """Return True if the menu is expanded, False otherwise."""
-        return self._expanded
+        return self.expanded
 
 
 class AnimatedStackedWidget(QStackedWidget):
@@ -138,20 +138,20 @@ class AnimatedStackedWidget(QStackedWidget):
     
     def __init__(self, parent=None):
         super().__init__(parent)
-        self._animations = {}
-        self._current_anim = None
-        self._animation_type = "slide"
-        self._animation_duration = 500
-        self._easing_curve = QEasingCurve.Type.OutBack
-        self._direction = Qt.Orientation.Horizontal
+        self.animations = {}
+        self.current_anim = None
+        self.animation_type = "slide"
+        self.animation_duration = 500
+        self.easing_curve = QEasingCurve.Type.OutBack
+        self.direction = Qt.Orientation.Horizontal
         
     def setup(self, animation_type="slide", duration=500, 
               easing=QEasingCurve.Type.OutBack, direction=Qt.Orientation.Horizontal):
         """Configure the animated stack widget."""
-        self._animation_type = animation_type
-        self._animation_duration = duration
-        self._easing_curve = easing
-        self._direction = direction
+        self.animation_type = animation_type
+        self.animation_duration = duration
+        self.easing_curve = easing
+        self.direction = direction
         
     def set_navigation(self, button_page_map):
         """Connect buttons to pages for navigation.
@@ -180,8 +180,8 @@ class AnimatedStackedWidget(QStackedWidget):
             return
             
         # If there's already an animation in progress, stop it
-        if self._current_anim and self._current_anim.state() == QPropertyAnimation.Running:
-            self._current_anim.stop()
+        if self.current_anim and self.current_anim.state() == QPropertyAnimation.Running:
+            self.current_anim.stop()
             
         # Get the current and next widget
         current_widget = self.currentWidget()
@@ -193,21 +193,21 @@ class AnimatedStackedWidget(QStackedWidget):
         # Set the next widget visible but at the right position
         next_widget.setVisible(True)
         
-        if self._animation_type == "slide":
-            self._slide_animation(current_widget, next_widget, index)
-        elif self._animation_type == "fade":
-            self._fade_animation(current_widget, next_widget, index)
+        if self.animation_type == "slide":
+            self.slide_animation(current_widget, next_widget, index)
+        elif self.animation_type == "fade":
+            self.fade_animation(current_widget, next_widget, index)
         else:
             # Default to no animation
             self.setCurrentIndex(index)
             
-    def _slide_animation(self, current_widget, next_widget, next_index):
+    def slide_animation(self, current_widget, next_widget, next_index):
         """Create and start a slide animation between widgets."""
         # Determine direction of animation
         forward = next_index > self.currentIndex()
         
         # Position the next widget
-        if self._direction == Qt.Orientation.Horizontal:
+        if self.direction == Qt.Orientation.Horizontal:
             offset = self.width()
             current_start = QPoint(0, 0)
             current_end = QPoint(-offset if forward else offset, 0)
@@ -231,28 +231,28 @@ class AnimatedStackedWidget(QStackedWidget):
         current_anim = QPropertyAnimation(current_widget, b"pos")
         current_anim.setStartValue(current_start)
         current_anim.setEndValue(current_end)
-        current_anim.setDuration(self._animation_duration)
-        current_anim.setEasingCurve(self._easing_curve)
+        current_anim.setDuration(self.animation_duration)
+        current_anim.setEasingCurve(self.easing_curve)
         
         # Animation for the next widget
         next_anim = QPropertyAnimation(next_widget, b"pos")
         next_anim.setStartValue(next_start)
         next_anim.setEndValue(next_end)
-        next_anim.setDuration(self._animation_duration)
-        next_anim.setEasingCurve(self._easing_curve)
+        next_anim.setDuration(self.animation_duration)
+        next_anim.setEasingCurve(self.easing_curve)
         
         # Add animations to the group
         anim_group.addAnimation(current_anim)
         anim_group.addAnimation(next_anim)
         
         # Connect to update the current index when animation finishes
-        anim_group.finished.connect(lambda: self._animation_finished(next_index))
+        anim_group.finished.connect(lambda: self.animation_finished(next_index))
         
         # Start the animation
-        self._current_anim = anim_group
+        self.current_anim = anim_group
         anim_group.start()
         
-    def _fade_animation(self, current_widget, next_widget, next_index):
+    def fade_animation(self, current_widget, next_widget, next_index):
         """Create and start a fade animation between widgets."""
         # Create opacity effects for both widgets
         current_effect = QGraphicsOpacityEffect(current_widget)
@@ -277,28 +277,28 @@ class AnimatedStackedWidget(QStackedWidget):
         fade_out = QPropertyAnimation(current_effect, b"opacity")
         fade_out.setStartValue(1.0)
         fade_out.setEndValue(0.0)
-        fade_out.setDuration(self._animation_duration)
-        fade_out.setEasingCurve(self._easing_curve)
+        fade_out.setDuration(self.animation_duration)
+        fade_out.setEasingCurve(self.easing_curve)
         
         # Animation for fading in the next widget
         fade_in = QPropertyAnimation(next_effect, b"opacity")
         fade_in.setStartValue(0.0)
         fade_in.setEndValue(1.0)
-        fade_in.setDuration(self._animation_duration)
-        fade_in.setEasingCurve(self._easing_curve)
+        fade_in.setDuration(self.animation_duration)
+        fade_in.setEasingCurve(self.easing_curve)
         
         # Add animations to the group
         anim_group.addAnimation(fade_out)
         anim_group.addAnimation(fade_in)
         
         # Connect to update the current index when animation finishes
-        anim_group.finished.connect(lambda: self._animation_finished(next_index))
+        anim_group.finished.connect(lambda: self.animation_finished(next_index))
         
         # Start the animation
-        self._current_anim = anim_group
+        self.current_anim = anim_group
         anim_group.start()
         
-    def _animation_finished(self, index):
+    def animation_finished(self, index):
         """Cleanup after animation finished."""
         # Set the final index
         self.setCurrentIndex(index)
@@ -312,17 +312,17 @@ class AnimatedStackedWidget(QStackedWidget):
                 widget.setGraphicsEffect(None)
         
         # Clear the current animation
-        self._current_anim = None
+        self.current_anim = None
 
 
 class ButtonGroup:
     """Manages a group of buttons with active/inactive styling."""
     
     def __init__(self):
-        self._buttons = []
-        self._active_style = ""
-        self._inactive_style = ""
-        self._current_active = None
+        self.buttons = []
+        self.active_style = ""
+        self.inactive_style = ""
+        self.current_active = None
         
     def setup(self, buttons, active_style, inactive_style):
         """Configure the button group.
@@ -332,23 +332,23 @@ class ButtonGroup:
             active_style: CSS style string for active button
             inactive_style: CSS style string for inactive buttons
         """
-        self._buttons = buttons
-        self._active_style = active_style
-        self._inactive_style = inactive_style
+        self.buttons = buttons
+        self.active_style = active_style
+        self.inactive_style = inactive_style
         
         # Set initial styles
         for button in buttons:
-            button.setStyleSheet(self._inactive_style)
+            button.setStyleSheet(self.inactive_style)
             button.clicked.connect(lambda checked=False, btn=button: self.set_active(btn))
             
     def set_active(self, active_button):
         """Set the specified button as active and others as inactive."""
-        for button in self._buttons:
+        for button in self.buttons:
             if button == active_button:
-                button.setStyleSheet(self._active_style)
-                self._current_active = button
+                button.setStyleSheet(self.active_style)
+                self.current_active = button
             else:
-                button.setStyleSheet(self._inactive_style)
+                button.setStyleSheet(self.inactive_style)
 
 """
 class StyleLoader:

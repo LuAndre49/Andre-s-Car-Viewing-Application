@@ -513,7 +513,7 @@ class Ui_MainWindow(object):
         QMetaObject.connectSlotsByName(MainWindow)
         
         # Setup the custom widgets after UI initialization
-        self._setup_custom_widgets()
+        self.setup_custom_widgets()
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle("Car Viewing Application")
@@ -539,7 +539,7 @@ class Ui_MainWindow(object):
         self.addUserBtn.setText("Add User")
     
 
-    def _setup_custom_widgets(self):
+    def setup_custom_widgets(self):
         """Set up the custom widgets with their configurations."""
         # Setup slide menus
         self.leftMenu.setup(

@@ -19,7 +19,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         
         # Connect signals to the custom widgets
-        self._connect_signals()
+        self.connect_signals()
         
         # Run ETL process to prepare data
         run_etl()
@@ -38,7 +38,7 @@ class MainWindow(QMainWindow):
         # Show the window
         self.show()
     
-    def _connect_signals(self):
+    def connect_signals(self):
         """Connect all signals for the custom widgets."""
         # Make sure the menu buttons are connected
         self.ui.menuBtn.clicked.connect(self.ui.leftMenu.toggle)
@@ -58,9 +58,9 @@ class MainWindow(QMainWindow):
         
         # Connect each button's clicked signal manually
         for button, page_index in button_page_map.items():
-            button.clicked.connect(lambda checked=False, idx=page_index: self._goto_page(idx))
+            button.clicked.connect(lambda checked=False, idx=page_index: self.goto_page(idx))
     
-    def _goto_page(self, index):
+    def goto_page(self, index):
         """Navigate to the specified page and update active button."""
         self.ui.mainPages.slide_to_index(index)
         

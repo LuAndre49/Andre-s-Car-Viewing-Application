@@ -2,6 +2,8 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
+import json
+from pathlib import Path
 
 URLS = {
     "New":  "https://www.autodeal.com.ph/cars/search?sort-by=alphabetical&page={}",
@@ -118,5 +120,17 @@ def extract(max_pages=1):
 
     finally:
         driver.quit()
+    
+    try:
+        with open(str(Path(__file__).parent.parent.parent / "data/raw/listings.json"), "w") as f:
+            json.dump(listings, f, indent=4)
+    except Exception as e:
+        print(f"[ERROR] Failed to write listings to file: {e}")
+
+    try:
+        with open(str(Path(__file__).parent.parent.parent / "data/raw/brands.json"), "w") as f:
+            json.dump(list(brands), f, indent=4)
+    except Exception as e:
+        print(f"[ERROR] Failed to write brands to file: {e}")
 
     return listings, brands

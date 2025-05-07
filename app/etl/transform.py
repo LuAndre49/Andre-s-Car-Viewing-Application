@@ -22,7 +22,13 @@ def download_image(url, save_dir="data/images"):
         print(f"[Image Download Error] {url}: {e}")
         return None
 
-def transform(raw_listings, car_brands):
+#def transform(raw_listings, car_brands):
+def transform():
+    # TEMPORARY for transforming from json file
+    with open('data/raw/listings.json', 'r') as f:
+        raw_listings = json.load(f)
+    with open('data/raw/brands.json', 'r') as f:
+        car_brands = json.load(f)
     transformed = []
     for car in raw_listings:
         title = car.get('title', '')
