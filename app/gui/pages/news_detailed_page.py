@@ -7,9 +7,11 @@ from PySide6.QtCore import Qt
 import os
 import webbrowser
 from app.settings.app_settings import app_settings
+import requests
+from bs4 import BeautifulSoup
 
-class CarDetailsPage(QWidget):
-    def __init__(self, car_data):
+class NewsDetailsPage(QWidget):
+    def __init__(self, news_data):
         super().__init__()
 
         self.setStyleSheet("""
@@ -25,6 +27,9 @@ class CarDetailsPage(QWidget):
                 background-color: #0F172A;
                 border-radius: 10px;
                 padding: 20px;
+            }
+            QLabel#snippet {
+                padding-right: 10px;
             }
         """)
 
@@ -51,7 +56,7 @@ class CarDetailsPage(QWidget):
         title_layout.setContentsMargins(0, 0, 0, 0)
         title_layout.setAlignment(Qt.AlignCenter)
 
-        title = QLabel(car_data["title"])
+        title = QLabel(news_data["title"])
         title.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         title_layout.addWidget(title)
 
@@ -72,8 +77,8 @@ class CarDetailsPage(QWidget):
         image_layout.setContentsMargins(20, 20, 20, 20)
     
 
-        if car_data.get("local_image_path") and os.path.exists(car_data["local_image_path"]):
-            pixmap = QPixmap(car_data["local_image_path"]).scaled(600, 400, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        if news_data.get("local_image_path") and os.path.exists(news_data["local_image_path"]):
+            pixmap = QPixmap(news_data["local_image_path"]).scaled(600, 400, Qt.KeepAspectRatio, Qt.SmoothTransformation)
             image_label = QLabel()
             image_label.setPixmap(pixmap)
             image_label.setAlignment(Qt.AlignCenter)
@@ -92,19 +97,13 @@ class CarDetailsPage(QWidget):
         self.price_label = QLabel()  
 
 
-        price_text = app_settings.format_price(car_data["price"]) if car_data["price"] else "PRICE ON REQUEST"
-        self.add_field("Price", price_text, self.price_label)
-        self.add_field("Brand", car_data["brand"])
-        self.add_field("Model", car_data["model"])
-        self.add_field("Year", str(car_data["year"]))
-        self.add_field("Transmission", car_data["transmission"])
-        self.add_field("Mileage", car_data["mileage"])
-        self.add_field("Condition", car_data["condition"])
-        self.add_field("Fuel Type", car_data.get("fuel_type", "Not specified"))
-        self.add_field("Location", car_data["location"])
+        self.add_field("Author", news_data["author"])
+        self.add_field("Date", news_data["date"])
+        snippet = self.get_snippet(news_data["link"])
+        self.add_snippet_field("Snippet of Article", snippet)
 
-        # View Listing Button
-        view_button = QPushButton("View Listing")
+        # View Full Article Button
+        view_button = QPushButton("View Full Article")
         view_button.setCursor(Qt.PointingHandCursor)
         view_button.setStyleSheet("""
             QPushButton {
@@ -118,7 +117,7 @@ class CarDetailsPage(QWidget):
                 background-color: #10b981;
             }
         """)
-        view_button.clicked.connect(lambda: self.open_listing(car_data["link"]))
+        view_button.clicked.connect(lambda: self.open_full_article(news_data["link"]))
         self.details_layout.addWidget(view_button, alignment=Qt.AlignLeft)
 
         # Add both panels to layout
@@ -126,15 +125,6 @@ class CarDetailsPage(QWidget):
         content_layout.addWidget(details_frame, 3)
 
         main_layout.addLayout(content_layout)
-        app_settings.settingsChanged.connect(self.refresh_price_display)
-
-    
-    def refresh_price_display(self):
-        price = self.car_data["price"]
-        if price:
-            self.price_label.setText(app_settings.format_price(price))
-        else:
-            self.price_label.setText("PRICE ON REQUEST")
 
     def add_field(self, label_text, value_text, label_ref=None):
             row = QHBoxLayout()
@@ -150,6 +140,46 @@ class CarDetailsPage(QWidget):
                 label_ref.setText(value_text)  
                 label_ref.setObjectName(label_text.lower() + "_label")
 
-    def open_listing(self, url):
+    def get_snippet(self, link):
+        response = requests.get(link)
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.content, 'html.parser')
+            paragraph_container = soup.select_one('div.padleft20.padright20.padbottom20')
+            if paragraph_container:
+                paragraphs = paragraph_container.find_all('p')
+                if paragraphs:
+                    # Get the first three paragraphs as a snippet
+                    snippet = ' '.join([para.get_text() for para in paragraphs[:3]])
+                    return snippet
+                else:
+                    return "No snippet available."
+            else:
+                return "No snippet available."
+        else:
+            return "Unable to fetch snippet."
+
+    def add_snippet_field(self, label_text, value_text):
+        # Create a row for the label and value
+        row = QHBoxLayout()
+        
+        # Label part
+        label = QLabel(f"{label_text}:")
+        label.setFixedWidth(130)
+        label.setAlignment(Qt.AlignTop)  # Align to top when text wraps
+        row.addWidget(label)
+        
+        # Value part with word wrap enabled
+        value = QLabel(value_text)
+        value.setObjectName("snippet")
+        value.setWordWrap(True)  # Enable word wrap
+        value.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
+        
+        # Add to row
+        row.addWidget(value, 1)  # Give the value label more space
+        
+        # Add the row to the details layout
+        self.details_layout.addLayout(row)
+
+    def open_full_article(self, url):
 
         webbrowser.open(url)

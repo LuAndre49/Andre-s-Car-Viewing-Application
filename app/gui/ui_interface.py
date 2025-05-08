@@ -528,7 +528,6 @@ class Ui_MainWindow(object):
         self.aboutBtn.setText("About")
         self.label_8.setText("HOME")
         self.label_6.setText("COMPARE")
-        self.label_9.setText("NEWS")
         self.label_4.setText("Users")
         self.showUserFormBtn.setText("Add User")
         self.label_7.setText("HELP")

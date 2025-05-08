@@ -46,7 +46,7 @@ def fetch_news_data():
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    cursor.execute("SELECT title, link, image_url, local_image_path, author, date, intro FROM news")
+    cursor.execute("SELECT title, link, image_url, local_image_path, author, date, intro FROM news ORDER BY date DESC")
     rows = cursor.fetchall()
     conn.close()
 

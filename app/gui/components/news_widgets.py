@@ -1,7 +1,9 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QSizePolicy
-from PySide6.QtCore import QRunnable, QThreadPool, Signal, QObject, Slot, Qt
+from PySide6.QtCore import QRunnable, QThreadPool, Signal, QObject, Slot, Qt, QTimer
 from PySide6.QtGui import QPixmap
 import requests
+import time
+import weakref
 
 
 class NewsBox(QWidget):
@@ -12,6 +14,7 @@ class NewsBox(QWidget):
         self.on_click = on_click
         self.image_cache = image_cache or {}
         self.threadpool = QThreadPool.globalInstance()
+        self.current_loader = None  # Track the current loader
 
         # Layout setup
         layout = QVBoxLayout()
@@ -21,6 +24,7 @@ class NewsBox(QWidget):
         # Image
         self.image_label = QLabel("Loading image...")
         self.image_label.setAlignment(Qt.AlignCenter)
+        self.image_label.setMinimumHeight(150)  # Ensure minimum height for image area
         layout.addWidget(self.image_label)
 
         # Title
@@ -76,8 +80,13 @@ class NewsBox(QWidget):
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self.setMaximumWidth(500)
 
-        # Load image
-        self.load_image_async()
+        # Load image - use a short delay to avoid threading issues
+        QTimer.singleShot(10, self.load_image_async)
+        
+        # Set up timeout for loading
+        self.loading_timer = QTimer(self)
+        self.loading_timer.setSingleShot(True)
+        self.loading_timer.timeout.connect(self.handle_loading_timeout)
 
     def load_image_async(self):
         image_url = self.news_data.get("image_url")
@@ -85,24 +94,67 @@ class NewsBox(QWidget):
             self.image_label.setText("No image")
             return
 
-        if image_url in self.image_cache:
+        # Cancel any previous loading timer
+        if self.loading_timer.isActive():
+            self.loading_timer.stop()
+
+        # If image is already in cache, use it immediately
+        if image_url in self.image_cache and not self.image_cache[image_url].isNull():
             self.set_image(self.image_cache[image_url])
-        else:
-            loader = ImageLoader(image_url)
-            loader.signals.finished.connect(lambda pixmap: self.handle_image_loaded(image_url, pixmap))
-            loader.signals.failed.connect(self.set_image_failed)
-            self.threadpool.start(loader)
+            return
+        
+        # Reset status
+        self.image_label.setText("Loading image...")
+        
+        # Create a new loader
+        loader = ImageLoader(image_url)
+        self.current_loader = weakref.ref(loader)  # Keep weak reference to avoid memory leaks
+        
+        # Connect signals
+        loader.signals.finished.connect(lambda pixmap: self.handle_image_loaded(image_url, pixmap))
+        loader.signals.failed.connect(self.set_image_failed)
+        
+        # Start the loader
+        self.threadpool.start(loader)
+        
+        # Set a timeout
+        self.loading_timer.start(5000)  # 5 second timeout
+
+    def handle_loading_timeout(self):
+        # If we hit the timeout, show error
+        self.set_image_failed()
 
     def handle_image_loaded(self, image_url, pixmap):
-        self.image_cache[image_url] = pixmap
-        self.set_image(pixmap)
+        # Stop the timeout timer
+        if self.loading_timer.isActive():
+            self.loading_timer.stop()
+            
+        if pixmap and not pixmap.isNull():
+            self.image_cache[image_url] = pixmap
+            self.set_image(pixmap)
+        else:
+            self.set_image_failed()
 
     def set_image(self, pixmap):
-        self.image_label.setPixmap(pixmap.scaled(300, 200, Qt.KeepAspectRatio, Qt.SmoothTransformation))
-        self.image_label.setText("")
+        if pixmap is None or pixmap.isNull() or pixmap.width() <= 0 or pixmap.height() <= 0:
+            self.set_image_failed()
+            return
+            
+        scaled_pixmap = pixmap.scaled(300, 200, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        if not scaled_pixmap.isNull():
+            self.image_label.setPixmap(scaled_pixmap)
+            self.image_label.setText("")
+        else:
+            self.set_image_failed()
 
     def set_image_failed(self):
         self.image_label.setText("Image not available")
+        
+    def deleteLater(self):
+        # Make sure to clean up when widget is deleted
+        if self.loading_timer.isActive():
+            self.loading_timer.stop()
+        super().deleteLater()
 
 
 class ImageLoader(QRunnable):
@@ -114,19 +166,62 @@ class ImageLoader(QRunnable):
         super().__init__()
         self.image_path = image_path
         self.signals = self.Signals()
+        self.cancelled = False
 
     @Slot()
     def run(self):
         try:
+            if self.cancelled:
+                return
+                
             pixmap = QPixmap()
+            
+            # Add a small delay to avoid thread contention
+            time.sleep(0.05)
+            
             if self.image_path.startswith("http"):
-                response = requests.get(self.image_path, timeout=10)
-                response.raise_for_status()
-                pixmap.loadFromData(response.content)
+                try:
+                    response = requests.get(self.image_path, timeout=8)
+                    if self.cancelled:
+                        return
+                        
+                    response.raise_for_status()
+                    
+                    # Check if content is valid image data
+                    if not pixmap.loadFromData(response.content):
+                        raise ValueError("Invalid image data received")
+                    
+                    if self.cancelled:
+                        return
+                        
+                    # Check if image has valid dimensions
+                    if pixmap.isNull() or pixmap.width() <= 0 or pixmap.height() <= 0:
+                        raise ValueError("Loaded image has invalid dimensions")
+                        
+                except requests.exceptions.Timeout:
+                    print(f"[ImageLoader] Timeout loading: {self.image_path}")
+                    raise ValueError("Request timed out")
+                except requests.exceptions.RequestException as e:
+                    print(f"[ImageLoader] Request failed: {self.image_path} - {e}")
+                    raise ValueError(f"Request failed: {str(e)}")
             else:
                 if not pixmap.load(self.image_path):
                     raise ValueError("Failed to load local image.")
-            self.signals.finished.emit(pixmap)
+                    
+                if self.cancelled:
+                    return
+                    
+                # Check if image has valid dimensions
+                if pixmap.isNull() or pixmap.width() <= 0 or pixmap.height() <= 0:
+                    raise ValueError("Loaded image has invalid dimensions")
+            
+            if not self.cancelled:
+                self.signals.finished.emit(pixmap)
+                
         except Exception as e:
             print(f"[ImageLoader] Failed to load: {self.image_path} - {e}")
-            self.signals.failed.emit()
+            if not self.cancelled:
+                self.signals.failed.emit()
+                
+    def cancel(self):
+        self.cancelled = True

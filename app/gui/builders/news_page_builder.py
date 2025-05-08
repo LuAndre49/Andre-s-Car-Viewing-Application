@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout, QLineEdit, QPushButton, QWidget
 from app.gui.pages.news_page import NewsPage
-#from app.gui.pages.news_detailed_page import NewsDetailsPage
+from app.gui.pages.news_detailed_page import NewsDetailsPage
 
 def show_news_details(news_data, ui):
     details_page = NewsDetailsPage(news_data)
