@@ -109,8 +109,15 @@ def extract_year(title):
 
 def extract_model(title, brand):
     if brand:
+        # Remove brand
         pattern = re.compile(re.escape(brand), re.IGNORECASE)
         model = pattern.sub('', title).strip()
+        
+        # Remove 4-digit year (e.g., 2010–2025)
+        model = re.sub(r'\b(19|20)\d{2}\b', '', model).strip()
+        
+        # Clean up extra spaces
+        model = re.sub(r'\s+', ' ', model)
         return model
     return title
 

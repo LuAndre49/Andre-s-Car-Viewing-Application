@@ -12,6 +12,7 @@ from app.etl.etl import run_etl
 from app.gui.utils.db_reader import fetch_car_data, fetch_news_data
 from app.gui.builders.cars_page_builder import setup_cars_page
 from app.gui.builders.news_page_builder import setup_news_page
+#from app.gui.builders.comparison_page_builder import setup_comparison_page
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -39,6 +40,9 @@ class MainWindow(QMainWindow):
         news_data = fetch_news_data()
         news_page_widget = setup_news_page(self.ui, news_data)
         self.ui.set_news_page(news_page_widget)
+
+        #comparison_page_widget = setup_comparison_page(self.ui, car_data)
+        #self.ui.set_comparison_page(comparison_page_widget)
 
         # Show the window
         self.show()

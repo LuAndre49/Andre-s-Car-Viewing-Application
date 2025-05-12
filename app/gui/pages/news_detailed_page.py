@@ -144,8 +144,17 @@ class NewsDetailsPage(QWidget):
         response = requests.get(link)
         if response.status_code == 200:
             soup = BeautifulSoup(response.content, 'html.parser')
-            paragraph_container = soup.select_one('div.padleft20.padright20.padbottom20')
-            if paragraph_container:
+            
+            # Get all divs that match the class
+            paragraph_containers = soup.find_all('div', class_='padleft20 padright20 padbottom20')
+            
+            if paragraph_containers:
+                # Check if there is more than one container and select the second one
+                if len(paragraph_containers) > 1:
+                    paragraph_container = paragraph_containers[1]  # Select the second instance
+                else:
+                    paragraph_container = paragraph_containers[0]  # Fallback to the first one if there's only one
+
                 paragraphs = paragraph_container.find_all('p')
                 if paragraphs:
                     # Get the first three paragraphs as a snippet
