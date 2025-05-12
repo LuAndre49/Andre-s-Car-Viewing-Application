@@ -7,7 +7,7 @@ import weakref
 
 
 class NewsBox(QWidget):
-    def __init__(self, news_data, on_click, image_cache=None):
+    def __init__(self, news_data, on_click, image_cache=None, index=0):
         super().__init__()
 
         self.news_data = news_data
@@ -80,8 +80,12 @@ class NewsBox(QWidget):
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self.setMaximumWidth(500)
 
-        # Load image - use a short delay to avoid threading issues
-        QTimer.singleShot(10, self.load_image_async)
+        # Load image with short delay to avoid threading issues
+        self.loading_timer = QTimer(self)
+        self.loading_timer.setSingleShot(True)
+        self.loading_timer.timeout.connect(self.load_image_async)
+        self.loading_timer.start(index * 30)  # delay increases per NewsBox index
+
         
         # Set up timeout for loading
         self.loading_timer = QTimer(self)
@@ -89,39 +93,40 @@ class NewsBox(QWidget):
         self.loading_timer.timeout.connect(self.handle_loading_timeout)
 
     def load_image_async(self):
-        image_url = self.news_data.get("image_url")
-        if not image_url:
-            self.image_label.setText("No image")
+        image_url = self.news_data['image_url']
+
+        if image_url in self.image_cache:
+            pixmap = self.image_cache[image_url]
+            if not pixmap.isNull():
+                self.set_image(pixmap)
+            else:
+                self.set_no_image()
             return
 
-        # Cancel any previous loading timer
-        if self.loading_timer.isActive():
-            self.loading_timer.stop()
+        if self.current_loader and (loader := self.current_loader()):
+            loader.cancel()
 
-        # If image is already in cache, use it immediately
-        if image_url in self.image_cache and not self.image_cache[image_url].isNull():
-            self.set_image(self.image_cache[image_url])
-            return
-        
-        # Reset status
-        self.image_label.setText("Loading image...")
-        
-        # Create a new loader
         loader = ImageLoader(image_url)
-        self.current_loader = weakref.ref(loader)  # Keep weak reference to avoid memory leaks
-        
-        # Connect signals
-        loader.signals.finished.connect(lambda pixmap: self.handle_image_loaded(image_url, pixmap))
-        loader.signals.failed.connect(self.set_image_failed)
-        
-        # Start the loader
+        loader.signals.finished.connect(self.set_image_with_check)
+        loader.signals.failed.connect(self.set_no_image)
+        loader.signals.finished.connect(lambda _: self._clear_loader())
+        self.current_loader = weakref.ref(loader)
         self.threadpool.start(loader)
-        
-        # Set a timeout
-        self.loading_timer.start(5000)  # 5 second timeout
+
+
+    def set_image_with_check(self, pixmap):
+        if pixmap and not pixmap.isNull():
+            self.set_image(pixmap)
+        else:
+            self.set_no_image()
+
+    def set_no_image(self):
+        self.image_label.setText("No Image")
+        self.image_label.setAlignment(Qt.AlignCenter)
+        self.image_label.setStyleSheet("color: gray; font-style: italic;")
 
     def handle_loading_timeout(self):
-        # If we hit the timeout, show error
+        # If hit the timeout, show error
         self.set_image_failed()
 
     def handle_image_loaded(self, image_url, pixmap):
@@ -151,10 +156,14 @@ class NewsBox(QWidget):
         self.image_label.setText("Image not available")
         
     def deleteLater(self):
-        # Make sure to clean up when widget is deleted
         if self.loading_timer.isActive():
             self.loading_timer.stop()
+        if self.current_loader and (loader := self.current_loader()):
+            loader.cancel()
         super().deleteLater()
+
+    def _clear_loader(self):
+        self.current_loader = None
 
 
 class ImageLoader(QRunnable):

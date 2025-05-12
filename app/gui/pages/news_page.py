@@ -7,7 +7,7 @@ class NewsPage(QWidget):
         self.news_data_all = news_data
         self.on_news_click = on_news_click
         self.image_cache = image_cache if image_cache is not None else {}
-        self.max_news_per_row = 2  # Adjust for layout clarity
+        self.max_news_per_row = 2  
         self.news_boxes = []
 
         self.page_layout = QVBoxLayout(self)
@@ -27,13 +27,12 @@ class NewsPage(QWidget):
         self.display_news(self.news_data_all)
 
     def clear_layout(self):
-        # Clean up existing widgets
         while self.grid_layout.count() > 0:
             child = self.grid_layout.takeAt(0)
             if child.widget():
-                child.widget().deleteLater()
-        
-        # Clear references but keep the cache intact
+                widget = child.widget()
+                widget.deleteLater()
+                widget.setParent(None) 
         self.news_boxes.clear()
 
     def display_news(self, data):
@@ -46,7 +45,7 @@ class NewsPage(QWidget):
             col = index % self.max_news_per_row
             
             # Create news box with the shared image cache
-            box = NewsBox(news, self.on_news_click, self.image_cache)
+            box = NewsBox(news, self.on_news_click, self.image_cache, index = index)
             self.news_boxes.append(box)
             self.grid_layout.addWidget(box, row, col)
 
