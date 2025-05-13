@@ -15,15 +15,17 @@ def setup_comparison_page(ui, car_data):
     # Setup search functionality for left
     def perform_left_search():
         condition = get_selected_condition(left_filter_bar)
-        left_selector.search_cars(left_search_bar.text(), condition.lower())
+        brand = left_filter_bar.brand_dropdown.currentText()
+        left_selector.search_cars(left_search_bar.text(), condition.lower(), brand)
     
     # Setup search functionality for right
     def perform_right_search():
         condition = get_selected_condition(right_filter_bar)
-        right_selector.search_cars(right_search_bar.text(), condition.lower())
+        brand = right_filter_bar.brand_dropdown.currentText()
+        right_selector.search_cars(right_search_bar.text(), condition.lower(), brand)
 
-    left_filter_bar.filterChanged.connect(lambda condition, _: apply_filters(left_selector, car_data, condition))
-    right_filter_bar.filterChanged.connect(lambda condition, _: apply_filters(right_selector, car_data, condition))
+    left_filter_bar.filterChanged.connect(lambda condition, brand: apply_filters(left_selector, car_data, condition, brand, left_search_bar.text()))
+    right_filter_bar.filterChanged.connect(lambda condition, brand: apply_filters(right_selector, car_data, condition, brand, right_search_bar.text()))
 
     left_search_bar.returnPressed.connect(perform_left_search)
     right_search_bar.returnPressed.connect(perform_right_search)
@@ -34,11 +36,14 @@ def setup_comparison_page(ui, car_data):
     # Comparison panel
     comparison_panel = ComparisonPanel()
     comparison_page_layout.addWidget(comparison_panel)
-    comparison_panel.hide()
+    #comparison_panel.hide()
 
     # Selection signals
     left_selector.car_selected.connect(lambda car: handle_car_selection(car, "left", left_selector, right_selector, comparison_panel))
     right_selector.car_selected.connect(lambda car: handle_car_selection(car, "right", left_selector, right_selector, comparison_panel))
+    comparison_panel.reset_left_car.connect(lambda: left_selector.return_to_search())
+    comparison_panel.reset_right_car.connect(lambda: right_selector.return_to_search())
+
 
     return comparison_page_layout
 
@@ -47,6 +52,7 @@ def create_selector_panel(title, car_data, splitter, ui):
     layout = QVBoxLayout(panel)
 
     label = QLabel(title)
+    label.setAlignment(Qt.AlignmentFlag.AlignCenter)
     label.setStyleSheet("font-size: 18px; font-weight: bold; color: white;")
     layout.addWidget(label)
 
@@ -88,14 +94,14 @@ def create_selector_panel(title, car_data, splitter, ui):
 
     # Filter bar
     filter_bar = FilterBar(panel)
-    filter_bar.filterChanged.connect(lambda condition, _: apply_filters(selector, car_data, condition))
+    filter_bar.filterChanged.connect(lambda condition, brand: apply_filters(selector, car_data, condition, brand))
 
     layout.addWidget(filter_bar)
     layout.addWidget(selector)
 
     # Connect search button separately
     search_button.clicked.connect(lambda: perform_search(search_bar, filter_bar, selector, car_data))
-
+    
     splitter.addWidget(panel)
     return selector, filter_bar, search_bar
 
@@ -104,26 +110,28 @@ def perform_search(search_bar, filter_bar, selector, car_data):
     Handles search functionality using the original search bar and filters.
     """
     condition = filter_bar.condition_dropdown.currentText()
+    brand = filter_bar.brand_dropdown.currentText()
     search_query = search_bar.text()
-    apply_filters(selector, car_data, condition, search_query)
+    apply_filters(selector, car_data, condition, brand, search_query)
 
 def get_selected_condition(filter_bar):
     return filter_bar.condition_dropdown.currentText()
 
-def apply_filters(selector, car_data, condition, search_query=""):
+def apply_filters(selector, car_data, condition, brand, search_query=""):
     filtered = car_data
 
-    # Filter based on condition
-    if condition != 'Both':
-        filtered = [car for car in car_data if car.get("condition", "").lower() == condition.lower()]
+    if condition.lower() != 'both':
+        filtered = [car for car in filtered if car.get("condition", "").lower() == condition.lower()]
 
-    # Filter based on search query
+    
+    if brand and brand.lower() != "all":
+        filtered = [car for car in filtered if car.get("brand", "").lower() == brand.lower()]  
+        
     if search_query:
         search_query = search_query.lower()
         filtered = [
             car for car in filtered
             if search_query in car.get("title", "").lower()
-            or search_query in car.get("model", "").lower()
         ]
 
     selector.display_cars(filtered)

@@ -262,12 +262,14 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_5.addWidget(self.newsBtn)
 
-        self.accountBtn = QPushButton(self.frame_3)
-        self.accountBtn.setObjectName(u"accountBtn")
-        self.accountBtn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self.accountBtn.setIcon(icon3)
+        self.databaseBtn = QPushButton(self.frame_3)
+        self.databaseBtn.setObjectName(u"databaseBtn")
+        self.databaseBtn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        icon20 = QIcon()
+        icon20.addFile(str(Path(__file__).parent /"icons/feather/database.png"), QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.databaseBtn.setIcon(icon20)
 
-        self.verticalLayout_5.addWidget(self.accountBtn)
+        self.verticalLayout_5.addWidget(self.databaseBtn)
 
         self.verticalLayout_4.addWidget(self.frame_3)
 
@@ -355,11 +357,11 @@ class Ui_MainWindow(object):
         self.label_9.setFont(font2)
         self.mainPages.addWidget(self.newsPage)
         
-        self.accountPage = QWidget()
-        self.accountPage.setObjectName(u"accountPage")
-        self.verticalLayout_10 = QVBoxLayout(self.accountPage)
+        self.databasePage = QWidget()
+        self.databasePage.setObjectName(u"databasePage")
+        self.verticalLayout_10 = QVBoxLayout(self.databasePage)
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
-        self.widget_3 = QWidget(self.accountPage)
+        self.widget_3 = QWidget(self.databasePage)
         self.widget_3.setObjectName(u"widget_3")
         self.verticalLayout_11 = QVBoxLayout(self.widget_3)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
@@ -393,7 +395,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_10.addWidget(self.widget_3)
 
-        self.mainPages.addWidget(self.accountPage)
+        self.mainPages.addWidget(self.databasePage)
         
         self.settingsPage = QWidget()
         self.settingsPage.setObjectName(u"settingsPage")
@@ -522,14 +524,14 @@ class Ui_MainWindow(object):
         self.carsBtn.setText("Cars")
         self.compareBtn.setText("Compare")
         self.newsBtn.setText("News")
-        self.accountBtn.setText("Account")
+        self.databaseBtn.setText("Database")
         self.settingsBtn.setText("Settings")
         self.helpBtn.setText("Help")
         self.aboutBtn.setText("About")
         self.label_8.setText("HOME")
-        self.label_6.setText("COMPARE")
-        self.label_4.setText("Users")
-        self.showUserFormBtn.setText("Add User")
+        
+        self.label_4.setText("Database")
+        self.showUserFormBtn.setText("Add Car")
         self.label_7.setText("HELP")
         self.label_3.setText("ABOUT")
         self.username.setPlaceholderText("Username")
@@ -584,7 +586,7 @@ class Ui_MainWindow(object):
             self.carsBtn: 1,  # Cars page index
             self.compareBtn: 2,  # Compare page index
             self.newsBtn: 3,  # News page index
-            self.accountBtn: 4,  # Account page index
+            self.databaseBtn: 4,  # database page index
             self.settingsBtn: 5,  # Settings page index
             self.helpBtn: 6,  # Help page index
             self.aboutBtn: 7,  # About page index
@@ -607,7 +609,7 @@ class Ui_MainWindow(object):
         
         # Create a ButtonGroup for navigation buttons
         nav_buttons = [self.homeBtn, self.carsBtn, self.compareBtn, self.newsBtn, 
-                    self.accountBtn, self.settingsBtn, self.helpBtn, self.aboutBtn]
+                    self.databaseBtn, self.settingsBtn, self.helpBtn, self.aboutBtn]
         
         active_style = """
         background-color: #1A365D;

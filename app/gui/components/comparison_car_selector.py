@@ -129,17 +129,24 @@ class ComparisonCarSelector(QWidget):
         # Emit signal with the selected car
         self.car_selected.emit(car)
 
-    def search_cars(self, query, condition_filter):
-        terms = query.lower().split()
-        filtered = []
-
-        for car in self.car_data_all:
-            title = car['title'].lower()
-            car_condition = car.get('condition', '').lower()
-            
-            # Check if search terms match and condition matches (if not 'both')
-            if all(term in title for term in terms) and (condition_filter.lower() == 'both' or condition_filter.lower() == car_condition):
-                filtered.append(car)
-
+    def search_cars(self, query, condition_filter, brand_filter="All"):
+        filtered = self.car_data_all
+        
+        # Apply condition filter
+        if condition_filter.lower() != 'both':
+            filtered = [car for car in filtered if car.get("condition", "").lower() == condition_filter.lower()]
+        
+        # Apply brand filter
+        if brand_filter.lower() != "all":
+            filtered = [car for car in filtered if car.get("brand", "").lower() == brand_filter.lower()]
+        
+        # Apply search query
+        if query:
+            terms = query.lower().split()
+            filtered = [
+                car for car in filtered
+                if all(term in car.get("title", "").lower() for term in terms)
+            ]
+        
         self.display_cars(filtered)
 

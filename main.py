@@ -12,7 +12,7 @@ from app.etl.etl import run_etl
 from app.gui.utils.db_reader import fetch_car_data, fetch_news_data
 from app.gui.builders.cars_page_builder import setup_cars_page
 from app.gui.builders.news_page_builder import setup_news_page
-#from app.gui.builders.comparison_page_builder import setup_comparison_page
+from app.gui.builders.comparison_page_builder import setup_comparison_page
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -41,8 +41,8 @@ class MainWindow(QMainWindow):
         news_page_widget = setup_news_page(self.ui, news_data)
         self.ui.set_news_page(news_page_widget)
 
-        #comparison_page_widget = setup_comparison_page(self.ui, car_data)
-        #self.ui.set_comparison_page(comparison_page_widget)
+        comparison_page_widget = setup_comparison_page(self.ui, car_data)
+        self.ui.set_comparison_page(comparison_page_widget)
 
         # Show the window
         self.show()
@@ -59,7 +59,7 @@ class MainWindow(QMainWindow):
             self.ui.carsBtn: 1, 
             self.ui.compareBtn: 2,
             self.ui.newsBtn: 3,
-            self.ui.accountBtn: 4,
+            self.ui.databaseBtn: 4,
             self.ui.settingsBtn: 5,
             self.ui.helpBtn: 6,
             self.ui.aboutBtn: 7,
@@ -76,7 +76,7 @@ class MainWindow(QMainWindow):
         # Set the active button based on index
         buttons = [
             self.ui.homeBtn, self.ui.carsBtn, self.ui.compareBtn, 
-            self.ui.newsBtn, self.ui.accountBtn, self.ui.settingsBtn, 
+            self.ui.newsBtn, self.ui.databaseBtn, self.ui.settingsBtn, 
             self.ui.helpBtn, self.ui.aboutBtn
         ]
         

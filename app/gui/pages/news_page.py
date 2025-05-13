@@ -7,7 +7,7 @@ class NewsPage(QWidget):
         self.news_data_all = news_data
         self.on_news_click = on_news_click
         self.image_cache = image_cache if image_cache is not None else {}
-        self.max_news_per_row = 2  
+        self.max_news_per_row = 3  
         self.news_boxes = []
 
         self.page_layout = QVBoxLayout(self)

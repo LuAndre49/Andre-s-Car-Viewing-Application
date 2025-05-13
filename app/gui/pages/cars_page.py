@@ -1,4 +1,5 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QScrollArea, QHBoxLayout, QGridLayout, QSizePolicy
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QScrollArea, QHBoxLayout, QGridLayout, QSizePolicy, QLabel
+from PySide6.QtCore import Qt
 from app.gui.components.car_widgets import CarBox
 
 
@@ -33,6 +34,14 @@ class CarsPage(QWidget):
             child = self.grid_layout.takeAt(0)
             if child.widget():
                 child.widget().deleteLater()
+
+         # If no cars match, show a message
+        if not data:
+            no_cars_label = QLabel("No cars match your search criteria")
+            no_cars_label.setStyleSheet("color: white; font-size: 14px;")
+            no_cars_label.setAlignment(Qt.AlignCenter)
+            self.grid_layout.addWidget(no_cars_label, 0, 0)
+            return
 
         self.car_boxes = []
         for index, car in enumerate(data):

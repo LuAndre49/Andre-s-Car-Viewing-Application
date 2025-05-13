@@ -99,7 +99,6 @@ def apply_filters(cars_page, car_data, condition, brand, search_query=""):
         filtered_data = [
             car for car in filtered_data
             if search_query in car.get("title", "").lower()
-            or search_query in car.get("model", "").lower()
         ]
 
     # Update the displayed cars
